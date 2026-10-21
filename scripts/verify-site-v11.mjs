@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright-core';
 import { FAN_AUTOPLAY_MS } from '../src/lib/aistory-fan3d-layout.js';
+import { PUBLIC_CONTACT_EMAIL } from '../src/lib/site-contact.js';
 const base = process.env.QA_BASE_URL || 'http://127.0.0.1:4321';
 const out = process.env.V11_QA_OUT || '/tmp/site-v11';
 const mode = process.env.QA_MODE || 'candidate';
@@ -23,7 +24,8 @@ const unhover = async page => {
 };
 try {
   if(mode==='contact') {
-    // A reserved test address is configured only in a temporary, local build.
+    // Validate the configured address without sending mail.
+    assert.ok(PUBLIC_CONTACT_EMAIL, 'Configure an email before running contact checks');
     for(const path of ['/#about','/aistory#development']) for(const deny of [false,true]) {
       const context=await browser.newContext({viewport:{width:390,height:844}});
       const page=await context.newPage();
@@ -35,13 +37,13 @@ try {
       },deny);
       await page.goto(base+path,{waitUntil:'domcontentloaded'});
       const root=page.locator('[data-public-contact]');await root.scrollIntoViewIfNeeded();
-      assert.equal(await root.getAttribute('data-email'),'qa@example.test');
-      assert.ok((await root.locator('a').getAttribute('href')).startsWith('mailto:qa@example.test?subject='));
+      assert.equal(await root.getAttribute('data-email'),PUBLIC_CONTACT_EMAIL);
+      assert.ok((await root.locator('a').getAttribute('href')).startsWith(`mailto:${PUBLIC_CONTACT_EMAIL}?subject=`));
       await root.locator('[data-copy-contact]').click();
       await page.waitForFunction(()=>!!document.querySelector('[data-copy-status]')?.textContent);
       const text=await root.locator('[data-copy-status]').textContent();
       assert.ok(deny ? text.includes('Copy is unavailable') : text==='Email address copied.');
-      if(!deny) assert.equal(await page.evaluate(()=>window.__copiedEmail),'qa@example.test');
+      if(!deny) assert.equal(await page.evaluate(()=>window.__copiedEmail),PUBLIC_CONTACT_EMAIL);
       report.checks.push(`${path} clipboard ${deny?'denied':'success'}`);
       await context.close();
     }
@@ -65,7 +67,7 @@ try {
         assert.equal(await page.locator('.focus-row[href]').count(),3);
         for(const id of ['colook','easytranslator']) { await page.locator(`.focus-row[href="#${id}"]`).click(); assert.equal(new URL(page.url()).hash,'#'+id); }
         assert.equal(await page.locator('[data-real-fan-autoplay]').isVisible(),false);
-        assert.equal(await page.locator('[data-public-contact]').count(),0,'Unapproved email must not be published');
+        assert.equal(await page.locator('[data-public-contact]').count(),PUBLIC_CONTACT_EMAIL ? 1 : 0,'Only an explicitly configured contact is published');
       }
       await context.close();
     }

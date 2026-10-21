@@ -1,6 +1,6 @@
-// Set only after the owner explicitly approves an address for public display.
+// Public display explicitly approved by the owner.
 // Empty means no email link, copy button, or address is shipped to either page.
-export const PUBLIC_CONTACT_EMAIL = '';
+export const PUBLIC_CONTACT_EMAIL = 'leomonan@gmail.com';
 
 export function contactDetails(value, subject = 'AIStory — Feedback / Preview interest') {
   if (typeof value !== 'string') throw new TypeError('Contact email must be text');
