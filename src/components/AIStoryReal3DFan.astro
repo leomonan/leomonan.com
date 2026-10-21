@@ -1,7 +1,8 @@
 ---
 import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
 import { getMessages, format } from '../i18n/index.js';
-const { locale = 'en' } = Astro.props;
+const { locale = 'en', magnification = 1 } = Astro.props;
+if (magnification !== 1 && magnification !== 1.15) throw new RangeError('Invalid fan magnification');
 const { fan } = getMessages(locale);
 /**
  * Production real-GLB carousel. Tab labels and order come from the same
@@ -16,7 +17,7 @@ const { fan } = getMessages(locale);
 
 ---
 
-<div class="fan-carousel" data-real-fan data-fan-copy={JSON.stringify(fan)} aria-label={fan.tour}>
+<div class="fan-carousel" data-real-fan data-fan-magnification={magnification} data-fan-copy={JSON.stringify(fan)} aria-label={fan.tour}>
   <div class="fan-stage" data-real-fan-stage>
     <div class="fan-fallback" data-real-fan-fallback aria-hidden="true">
       <picture class="fan-poster" data-fan-poster="3d-scene">
@@ -144,6 +145,15 @@ const { fan } = getMessages(locale);
   }
   .fan-fallback.is-hidden { display: none; }
 
+  /* Detail page: uniformly enlarge the existing K scene by 15%, without
+     changing any world-space phone poses or the original homepage layout.
+     Match the scene-derived static fallback by scaling the same poster. */
+  .fan-carousel[data-fan-magnification="1.15"] .fan-stage { height: 655.5px; }
+  .fan-carousel[data-fan-magnification="1.15"] .fan-poster img {
+    width: 115%;
+    margin-left: -7.5%;
+  }
+
   .fan-tabs {
     position: relative;
     z-index: 3;
@@ -232,9 +242,11 @@ const { fan } = getMessages(locale);
   @media (max-width: 1100px) {
     .fan-carousel { width: min(100%, 850px); margin: 0 auto; }
     .fan-stage { height: 548px; }
+    .fan-carousel[data-fan-magnification="1.15"] .fan-stage { height: 630.2px; }
   }
   @media (max-width: 700px) {
     .fan-stage { height: 452px; }
+    .fan-carousel[data-fan-magnification="1.15"] .fan-stage { height: 519.8px; }
     .fan-tabs { width: 94%; gap: 5px; }
     .fan-tab { padding: 8px 6px 7px; border-radius: 9px; }
     .fan-tab span { display: none; }
@@ -242,6 +254,7 @@ const { fan } = getMessages(locale);
   }
   @media (max-width: 480px) {
     .fan-stage { height: 340px; border-radius: 18px; }
+    .fan-carousel[data-fan-magnification="1.15"] .fan-stage { height: 391px; }
     .fan-tabs { width: 100%; gap: 5px; }
   }
   @media (prefers-reduced-motion: reduce) {

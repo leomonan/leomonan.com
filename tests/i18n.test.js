@@ -53,7 +53,9 @@ test('all four routes are thin wrappers around exactly two templates', async () 
   }
   for (const view of ['HomePage','AIStoryPage']) {
     const source = await read(`src/views/${view}.astro`);
-    assert.ok(source.includes('<AIStoryReal3DFan locale={locale} />'));
+    assert.ok(source.includes(view === 'AIStoryPage'
+      ? '<AIStoryReal3DFan locale={locale} magnification={1.15} />'
+      : '<AIStoryReal3DFan locale={locale} />'));
     assert.ok(source.includes('<ContactActions locale={locale}'));
     assert.ok(!source.includes('set:html'));
   }

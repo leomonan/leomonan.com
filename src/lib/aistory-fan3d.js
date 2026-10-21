@@ -513,12 +513,17 @@ export async function mountAIStoryReal3DFan() {
     if (box.width < 20 || box.height < 20) return;
     renderer.setSize(box.width, box.height, false);
     camera.aspect = box.width / box.height;
+    // Enlarging the product-page stage changes its aspect ratio. Preserve
+    // the original mobile camera distance rather than cancelling the 15%
+    // size increase through narrow-screen auto-fit.
+    const displayScale = Number(root.dataset.fanMagnification || 1);
+    const originalAspect = camera.aspect * displayScale;
     // Keep mirrored fan inside narrower mobile viewports without
     // shrinking the geometry assets individually.
     widthFactor = Math.max(.73, Math.min(1, box.width / STAGE_WIDTH));
-    camera.position.z = camera.aspect < 1.05
+    camera.position.z = originalAspect < 1.05
       ? Math.max(FAN_VISUAL.mobileCameraZ,
-          FAN_VISUAL.mobileCameraZ * 1.06 / camera.aspect)
+          FAN_VISUAL.mobileCameraZ * 1.06 / originalAspect)
       : FAN_VISUAL.desktopCameraZ;
     camera.updateProjectionMatrix();
     camera.lookAt(0, 0, 0);

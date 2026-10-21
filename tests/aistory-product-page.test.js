@@ -9,7 +9,7 @@ test('both public pages use one shared layout and one shared 3D showcase', async
   for (const path of ['src/views/HomePage.astro', 'src/views/AIStoryPage.astro']) {
     const source = await read(path);
     assert.equal((source.match(/<SiteLayout(?:\s|>)/g) || []).length, 1);
-    assert.equal((source.match(/<AIStoryReal3DFan\s+locale=\{locale\}\s*\/>/g) || []).length, 1);
+    assert.equal((source.match(/<AIStoryReal3DFan\s+locale=\{locale\}(?:\s+magnification=\{1\.15\})?\s*\/>/g) || []).length, 1);
     assert.ok(!source.includes('new THREE.') && !source.includes('WebGLRenderer'));
     assert.equal((source.match(/<main\s/g)||[]).length,1);
   }
@@ -62,4 +62,24 @@ test('no new duplicate model or screen assets are added', async () => {
     'aistory-fan3d-poster-desktop.webp','aistory-fan3d-poster-mobile.webp',
     'aistory-fan3d-poster-small.webp','aistory-fan3d-poster-tablet.webp','aistory-universe.webp','glb']);
   assert.deepEqual(await readdir(new URL('glb/', root)), ['apple_iphone_18_pro_max_silver_2026.glb']);
+});
+
+
+test('only AIStory detail magnifies the entire three-phone K by exactly 15%', async () => {
+  const detail = await read('src/views/AIStoryPage.astro');
+  const home = await read('src/views/HomePage.astro');
+  const component = await read('src/components/AIStoryReal3DFan.astro');
+  const runtime = await read('src/lib/aistory-fan3d.js');
+  assert.match(detail, /<AIStoryReal3DFan locale=\{locale\} magnification=\{1\.15\} \/>/);
+  assert.match(home, /<AIStoryReal3DFan locale=\{locale\} \/>/);
+  assert.ok(!home.includes('magnification='));
+  assert.match(component, /data-fan-magnification=\{magnification\}/);
+  const heights = [[570,655.5],[548,630.2],[452,519.8],[340,391]];
+  for (const [base,large] of heights) {
+    assert.ok(Math.abs(large/base - 1.15)<1e-8);
+    assert.ok(component.includes('height: ' + large + 'px;'));
+  }
+  assert.match(component,/width: 115%;\s*margin-left: -7\.5%;/);
+  assert.match(runtime,/const originalAspect = camera\.aspect \* displayScale/);
+  assert.match(runtime,/camera\.position\.z = originalAspect < 1\.05/);
 });
