@@ -52,6 +52,7 @@ import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
       </button>
     ))}
   </div>
+  <button class="fan-autoplay" type="button" data-real-fan-autoplay hidden>Pause autoplay</button>
   <p class="fan-status" data-real-fan-status aria-live="polite">Loading interactive AIStory preview…</p>
 </div>
 
@@ -209,6 +210,11 @@ import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
   .fan-tab.is-active span { color: #6d83e9; }
   .fan-tab:disabled { cursor: default; }
   .fan-tab:focus-visible { outline: 2px solid #3558ff; outline-offset: 2px; }
+  .fan-autoplay { display: block; min-height: 44px; margin: 6px auto 0; padding: 8px 14px; border: 1px solid rgba(84,96,136,.16); border-radius: 11px; background: rgba(255,255,255,.45); color: #405074; font: inherit; font-size: .75rem; cursor: pointer; }
+  .fan-autoplay[hidden] { display: none; }
+  .fan-autoplay:disabled { cursor: default; opacity: .75; }
+  .fan-autoplay:focus-visible { outline: 2px solid #3558ff; outline-offset: 3px; }
+
   .fan-status {
     margin: 0;
     height: 1px;

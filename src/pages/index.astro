@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import ContactActions from '../components/ContactActions.astro';
 import AIStoryReal3DFan from '../components/AIStoryReal3DFan.astro';
 
 const systems = [
@@ -67,8 +68,8 @@ const principles = [
       </div>
       <div class="focus-list">
         <a class="focus-row focus-link" href="/aistory"><span>AIStory</span><small>Flagship · Story worlds →</small></a>
-        <div class="focus-row"><span>Colook</span><small>Desktop · AI agents</small></div>
-        <div class="focus-row"><span>EasyTranslator</span><small>Shipped · macOS</small></div>
+        <a class="focus-row focus-link" href="#colook"><span>Colook</span><small>Desktop · AI agents →</small></a>
+        <a class="focus-row focus-link" href="#easytranslator"><span>EasyTranslator</span><small>Shipped · macOS →</small></a>
       </div>
     </aside>
   </section>
@@ -116,7 +117,7 @@ const principles = [
     </article>
 
     <div class="product-pair">
-      <article class="product-card colook-card">
+      <article class="product-card colook-card" id="colook">
         <div class="card-meta">
           <span>02 / Desktop</span>
           <span>Early access</span>
@@ -138,7 +139,7 @@ const principles = [
         </div>
       </article>
 
-      <article class="product-card translator-card">
+      <article class="product-card translator-card" id="easytranslator">
         <div class="card-meta">
           <span>03 / macOS</span>
           <span>Shipped</span>
@@ -223,6 +224,7 @@ const principles = [
           <p>
             I work across product thinking, interaction design, architecture, and implementation. I’m especially interested in products that remember, continue, and reliably get work done.
           </p>
+          <ContactActions subject="leomonan.com — Feedback / Contact" />
           <a href="https://github.com/leomonan" target="_blank" rel="noreferrer">Follow the work on GitHub <span>↗</span></a>
         </div>
       </div>
@@ -379,7 +381,11 @@ const principles = [
 
   @media (max-width: 1020px) {
     .hero { grid-template-columns: 1fr; min-height: auto; gap: 48px; padding-top: 72px; }
-    .hero-panel { min-height: 460px; }
+    .hero-panel { min-height: 0; padding: 22px; }
+    .hero-panel .signal { display: none; }
+    .hero { gap: 28px; }
+    .focus-list { padding-top: 8px; }
+    .focus-row { min-height: 48px; align-items: center; }
     .system-row { grid-template-columns: 42px minmax(180px, 0.8fr) 1.2fr; }
     .system-tags { grid-column: 2 / -1; justify-content: flex-start; }
   }
@@ -397,10 +403,10 @@ const principles = [
 
   @media (max-width: 620px) {
 
-    .hero { padding-top: 58px; padding-bottom: 82px; }
+    .hero { padding-top: 40px; padding-bottom: 46px; gap: 24px; }
     h1 { font-size: clamp(3.45rem, 16.5vw, 5.3rem); }
     .hero-lead { font-size: 1rem; }
-    .hero-panel { min-height: 410px; padding: 22px; border-radius: 24px; }
+    .hero-panel { min-height: 0; padding: 22px; border-radius: 24px; }
     .ring-b { width: 278px; height: 160px; }
     .ring-a { width: 210px; height: 118px; }
     .dot-a { right: 40px; }
@@ -428,6 +434,7 @@ const principles = [
 
 
 
+  .product-card[id] { scroll-margin-top: 24px; }
   .focus-link { text-decoration: none; }
   .focus-link:hover { color: var(--blue); }
   .flagship-actions { display: flex; align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 30px; }

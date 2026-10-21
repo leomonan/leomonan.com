@@ -11,6 +11,7 @@ import { chromium } from 'playwright-core';
 const source = 'src/lib/aistory-fan3d.js';
 const original = await readFile(source,'utf8');
 const anchor = '  function renderFrame(timestamp) {';
+const drawAnchor = '    renderer.render(scene, camera);';
 const dest = process.env.K_MOTION_QA_OUT || '/tmp/aistory-upright-motion';
 await mkdir(dest,{recursive:true});
 let browser,server;
@@ -30,13 +31,20 @@ const hook = [
   '    });',
   '  }',
 ].join('\n')+'\n';
+const capture = [
+  drawAnchor,
+  '    if (window.__FAN_E2E__ && window.__motionFrames && animation) {',
+  '      window.__motionFrames.push(window.__fanMotionProbe());',
+  '    }',
+].join('\n');
 
 try {
   assert.equal(original.split(anchor).length,2,'Unique test hook position');
-  await writeFile(source,original.replace(anchor,hook+anchor));
+  assert.equal(original.split(drawAnchor).length,2,'Unique render observation point');
+  // Observe completed real renders, not a 12ms timer that can miss frames or
+  // repeatedly sample the same pose while the browser is busy with WebGL.
+  await writeFile(source,original.replace(anchor,hook+anchor).replace(drawAnchor,capture));
   execFileSync('npm',['run','build'],{stdio:'inherit'});
-  // Launch Astro directly: killing the npm wrapper left a detached Astro
-  // preview behind and blocked the clean-build visual handoff gate.
   server=spawn(process.execPath,['node_modules/astro/bin/astro.mjs',
     'preview','--host','127.0.0.1','--port','4332'],{stdio:'inherit'});
   let ready=false;
@@ -66,12 +74,9 @@ try {
     await page.locator('[data-real-fan]').hover();
 
     // Forward and backward movements both tested across two widths.
-    for(const selected of [1,0,3,0]){
+    for(const [step,selected] of [1,0,3,0].entries()){
       await page.evaluate(index=>{
         window.__motionFrames=[];
-        window.__sampleTimer=setInterval(()=>{
-          window.__motionFrames.push(window.__fanMotionProbe());
-        },12);
         document.querySelector('[data-real-fan-tab="'+index+'"]').click();
         window.__motionFrames.push(window.__fanMotionProbe());
       },selected);
@@ -82,9 +87,11 @@ try {
           window.__fanMotionProbe().active===index;
       },selected,{timeout:25000});
       const snaps=await page.evaluate(()=>{
-        clearInterval(window.__sampleTimer);
-        return window.__motionFrames;
+        const frames=window.__motionFrames;
+        window.__motionFrames=null;
+        return frames;
       });
+      await writeFile(`${dest}/${view.name}-step-${step}-${selected}.json`,JSON.stringify(snaps,null,2));
       const motion=snaps.filter(s=>s.routes.length);
       assert.ok(motion.length>=3,'Must sample real rendered rotation frames');
       const entries=motion.map(s=>({...s,route:s.routes.find(r=>r.kind==='enter')}));
@@ -125,6 +132,8 @@ try {
           assert.equal(r.texture,match.texture,'No screenshot replacement midstep');
         }
       }
+      console.log('K_RENDER_SAMPLES='+JSON.stringify({view:view.name,step,selected,
+        samples:motion.map(s=>({t:s.progress,exitYaw:s.routes.find(r=>r.kind==='exit').yaw}))}));
       assert.ok(entryVisibleRotation,'Rotate toward K within visible entry travel');
       assert.ok(exitVisibleRotation,'Unwind K within visible exit travel');
       console.log('K_UPRIGHT_'+view.name+'_'+selected+'=PASS '+JSON.stringify({

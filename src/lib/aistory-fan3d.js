@@ -179,6 +179,7 @@ export async function mountAIStoryReal3DFan() {
   const status = $(root, '[data-real-fan-status]');
   const fallback = $(host, '[data-real-fan-fallback]');
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const autoplayButton = $(root, '[data-real-fan-autoplay]');
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({
@@ -280,6 +281,12 @@ export async function mountAIStoryReal3DFan() {
   let documentVisible = !document.hidden;
   let hovered = false, focused = false, touching = false;
   let timer = 0;
+  // User intent is separate from temporary hover/focus/visibility pauses.
+  // Storage is optional; failures must not prevent local pause controls.
+  const pauseKey = 'aistory:autoplay-paused';
+  let userPaused = false;
+  let contextLost = false;
+  try { userPaused = sessionStorage.getItem(pauseKey) === '1'; } catch { /* optional */ }
   let pointer = null;
   const listeners = [];
 
@@ -287,6 +294,18 @@ export async function mountAIStoryReal3DFan() {
     target.addEventListener(name, handler, options);
     listeners.push(() => target.removeEventListener(name, handler, options));
   };
+
+  function syncAutoplayControl() {
+    if (!(autoplayButton instanceof HTMLButtonElement)) return;
+    autoplayButton.hidden = false;
+    autoplayButton.disabled = motion.matches || contextLost;
+    autoplayButton.textContent = contextLost ? 'Autoplay unavailable'
+      : motion.matches ? 'Autoplay off (reduced motion)'
+      : userPaused ? 'Resume autoplay' : 'Pause autoplay';
+    autoplayButton.title = userPaused
+      ? 'Manual controls still work. Resume applies when the carousel is not being interacted with.'
+      : 'Finish the current move, then pause automatic rotation.';
+  }
 
   function syncTabs() {
     tabs.forEach((button, index) => {
@@ -366,7 +385,7 @@ export async function mountAIStoryReal3DFan() {
 
   function scheduleTimer() {
     stopTimer();
-    if (disposed || animation || motion.matches || !visible || !documentVisible ||
+    if (disposed || animation || userPaused || contextLost || motion.matches || !visible || !documentVisible ||
         hovered || focused || touching) return;
     timer = window.setTimeout(() => select(active + 1), FAN_AUTOPLAY_MS);
   }
@@ -537,6 +556,17 @@ export async function mountAIStoryReal3DFan() {
     return null;
   }
 
+  if (autoplayButton instanceof HTMLButtonElement) {
+    add(autoplayButton, 'click', () => {
+      if (motion.matches || contextLost) return;
+      userPaused = !userPaused;
+      try { sessionStorage.setItem(pauseKey, userPaused ? '1' : '0'); } catch { /* optional */ }
+      // Do not cancel RAF or change poses: an in-flight move finishes normally.
+      stopTimer();
+      syncAutoplayControl();
+      scheduleTimer();
+    });
+  }
   tabs.forEach((tab, index) => {
     add(tab, 'click', () => select(index));
     add(tab, 'keydown', (event) => {
@@ -600,6 +630,7 @@ export async function mountAIStoryReal3DFan() {
     }
   });
   add(motion, 'change', () => {
+    syncAutoplayControl();
     if (motion.matches && animation) {
       animation = null;
       placeInstant(desired);
@@ -608,6 +639,8 @@ export async function mountAIStoryReal3DFan() {
   });
   add(canvas, 'webglcontextlost', (event) => {
     event.preventDefault();
+    contextLost = true;
+    syncAutoplayControl();
     animation = null;
     stopTimer();
     if (frameId) cancelAnimationFrame(frameId);
@@ -671,6 +704,7 @@ export async function mountAIStoryReal3DFan() {
 
   // P1 is visible on first frame. P2 runs entirely on THREE.Object3D,
   // without changing image source, screen material or CSS opacity.
+  syncAutoplayControl();
   resize();
   placeInstant(0);
   if (status) status.textContent = 'Episode centered · true 3D device rotation ready';
