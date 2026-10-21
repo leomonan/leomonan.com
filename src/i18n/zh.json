@@ -1,0 +1,248 @@
+{
+  "common": {
+    "homeTitle": "Leo Monan — 独立产品开发者",
+    "homeDescription": "Leo Monan 是一名独立产品开发者，专注 AI 原生软件，探索故事创作、桌面工具、自动化与交互系统。",
+    "productTitle": "AIStory — 让故事拥有记忆 | Leo Monan",
+    "productDescription": "AIStory 是面向个人创作者的故事创作工具，将画面、声音、角色与系列剧集连接起来，让故事世界持续生长。产品目前正在开发中。",
+    "shareAlt": "三台手机展示 AIStory 的图文故事播放器与个人创作工具",
+    "skip": "跳到正文",
+    "brandHome": "Leo Monan 首页",
+    "navLabel": "主导航",
+    "work": "作品",
+    "systems": "系统探索",
+    "about": "关于",
+    "allProducts": "所有产品",
+    "workflow": "创作流程",
+    "development": "开发进度",
+    "language": "语言",
+    "footer": "安静构建，认真交付。",
+    "topics": "{name} 相关主题",
+    "active": "开发中",
+    "releases": "查看发布版本"
+  },
+  "home": {
+    "heroTitle": "构建真实产品",
+    "heroPrefix": "面向 ",
+    "heroAccent": "AI 原生时代。",
+    "aboutTitle": "从想法",
+    "aboutAccent": "到真实产品。",
+    "status": "独立产品开发者",
+    "lead": "从想法到落地，我设计并构建产品，探索故事创作、桌面工具、自动化与交互系统。",
+    "selectedAction": "查看精选作品",
+    "current": "正在构建的产品",
+    "focusStory": "旗舰产品 · 故事世界 →",
+    "focusColook": "桌面工具 · AI 智能体 →",
+    "focusTranslator": "已发布 · macOS →",
+    "selected": "精选作品",
+    "productsTitle": "不止演示，更是产品。",
+    "productsLead": "故事创作旗舰产品、编程智能体工作区，以及已发布的桌面理解工具。",
+    "flagship": "01 / 旗舰产品",
+    "storyKicker": "持续生长的故事世界",
+    "storyTagline": "让故事拥有记忆。",
+    "storyDescription": "让角色、声音、画面和故事设定在不同剧集与系列之间延续，把一次生成变成能够持续创作的故事世界。",
+    "storyTopics": "AIStory 相关主题",
+    "tagWorlds": "故事世界",
+    "tagCharacters": "角色",
+    "tagVoice": "声音",
+    "tagContinuity": "连续创作",
+    "explore": "了解 AIStory",
+    "overview": "产品介绍 · 开发中",
+    "desktop": "02 / 桌面工具",
+    "early": "早期体验",
+    "running": "运行中 · 高负载",
+    "waiting": "等待中",
+    "ready": "就绪",
+    "colookKicker": "本地优先的智能体工作区",
+    "colookTagline": "看清编程智能体正在做什么。",
+    "colookDescription": "面向 Codex、Claude Code 和 Cursor Agent 的桌面工作区，在同一处查看会话、运行状态与权限处理。",
+    "shipped": "已发布",
+    "naturalMeaning": "自然语义",
+    "context": "上下文",
+    "terms": "术语",
+    "explain": "解释",
+    "translatorKicker": "桌面理解工具",
+    "translatorTagline": "理解内容，不必打断工作流。",
+    "translatorDescription": "在你正在阅读的文字或截图旁，提供翻译、解释、术语与上下文信息，尽量减少对 macOS 工作流程的打扰。",
+    "systemsKicker": "系统与实验",
+    "systemsTitle": "深入产品背后。",
+    "systemsDescription": "有些项目直接面向用户，另一些则用于探索产品背后的可靠性、运行时与开发工具。",
+    "principlesKicker": "我的思考",
+    "principlesTitle": "我在意的三件事。",
+    "aboutLead": "我是一名独立产品开发者，专注 AI 原生软件。",
+    "aboutDescription": "从产品思考、交互设计，到架构和实现，我参与产品构建的全过程。我尤其关注那些能够记住上下文、持续积累，并可靠完成工作的产品。",
+    "follow": "在 GitHub 关注开发进展",
+    "systems": [
+      {
+        "number": "01",
+        "name": "AutoManus",
+        "type": "确定性的 AI 工作流",
+        "description": "将自然语言意图转化为可验证、可重放的桌面工作流的本地执行系统。",
+        "tags": [
+          "智能体",
+          "工作流运行时",
+          "可靠性"
+        ]
+      },
+      {
+        "number": "02",
+        "name": "Order602",
+        "type": "交互运行时实验",
+        "description": "为持续交互与空间体验探索可复用的运行时基础。",
+        "tags": [
+          "XR",
+          "运行时",
+          "世界"
+        ]
+      },
+      {
+        "number": "03",
+        "name": "Commit Hooks",
+        "type": "开发者工具",
+        "description": "可复用的 Git 质量门禁，用于代码卫生、仓库规则及可选的 LLM 辅助审查。",
+        "tags": [
+          "Git",
+          "质量门禁",
+          "LLM 审查"
+        ]
+      }
+    ],
+    "principles": [
+      [
+        "01",
+        "持续积累，胜过一时新奇",
+        "好的 AI 产品能够记住上下文，并随着使用不断积累价值。"
+      ],
+      [
+        "02",
+        "可靠，胜过看似神奇",
+        "智能很重要，可预期的执行与清晰的边界同样重要。"
+      ],
+      [
+        "03",
+        "真正的产品，而不只是演示",
+        "我关注人们愿意反复使用的产品，而不是体验一次便被遗忘的 AI 演示。"
+      ]
+    ]
+  },
+  "product": {
+    "openScreenshot": "在新标签页查看{view}的原始截图",
+    "title": "让故事",
+    "titleAccent": "拥有记忆。",
+    "lead": "创作有画面、有声音的故事。",
+    "leadNext": "延续角色，让故事继续。",
+    "workflowTitle": "从一个想法，",
+    "workflowAccent": "到一个可延续的世界。",
+    "continuityTitle": "不止一个故事，",
+    "continuityAccent": "更是你的故事世界。",
+    "developmentTitle": "认真打磨，",
+    "developmentAccent": "逐步成形。",
+    "status": "AIStory · 开发中",
+    "context": "一个属于你的创作空间，让想讲的故事值得一次次回来。",
+    "workflowAction": "查看创作流程",
+    "developmentAction": "查看开发进度",
+    "preview": "产品预览 · 当前展示中文界面",
+    "caption": "四个视角，连接同一个创作空间。",
+    "workflowKicker": "01 / 创作流程",
+    "workflowLead": "从第一句描述到下一集创作，了解当前产品如何工作。这里是产品介绍页，不是在线创作应用。",
+    "fullSize": "查看原图",
+    "screensNote": "以上均为真实产品截图。截图本身不能播放声音，本网站也不提供在线生成故事功能。",
+    "continuityKicker": "02 / 为下一章而构建",
+    "continuityLead": "把剧集组织成系列，再汇入个人故事宇宙。开始下一次创作时，回到已有的角色和故事方向。",
+    "continuityDetail": "目标是让故事延续，而不是每次输入都重新开始。长篇一致性与生成控制仍在开发和验证中。",
+    "personalNote": "你的个人内容库，不是公开推荐流。",
+    "structure": "你的故事如何组织",
+    "illustrative": "结构示意",
+    "universe": "宇宙",
+    "universeTitle": "故事共同的世界",
+    "universeMeta": "世界设定 · 角色 · 创作方向",
+    "series": "系列",
+    "seriesTitle": "持续生长的一段故事",
+    "firstEpisode": "第一集",
+    "beginStory": "故事从这里开始",
+    "nextEpisode": "下一集",
+    "returnWorld": "回到你的故事世界",
+    "continue": "继续创作",
+    "nextDirection": "为后续故事设定方向",
+    "developmentKicker": "03 / 当前阶段",
+    "developmentLead": "AIStory 正由 Leo Monan 持续开发与测试。本页用于介绍产品，不代表已开放注册或正式公开发布。",
+    "developmentNote": "开放方式、支持平台和发布时间将在确认后公布。",
+    "follow": "在 GitHub 关注 Leo",
+    "back": "返回所有产品",
+    "steps": [
+      {
+        "id": "create",
+        "number": "01",
+        "title": "从一个想法开始。",
+        "description": "描述背景、角色，或你想讲的故事，为下一次创作确定方向。",
+        "alt": "AIStory 创作页面中的故事需求输入框"
+      },
+      {
+        "id": "character",
+        "number": "02",
+        "title": "认识你的角色。",
+        "description": "设定角色、视觉形象与声音，在同一处管理故事的重要细节。",
+        "alt": "AIStory 角色设定页，展示角色画像与身份信息"
+      },
+      {
+        "id": "episode",
+        "number": "03",
+        "title": "看见、听见、读懂。",
+        "description": "在同一个播放器中，通过插画、配音与文字体验一集故事。",
+        "alt": "AIStory 剧集播放器，展示插画场景、配音字幕和播放控件"
+      },
+      {
+        "id": "universe",
+        "number": "04",
+        "title": "让故事继续。",
+        "description": "回到个人故事库，管理系列和剧集，在同一个世界里继续创作。",
+        "alt": "AIStory 个人故事宇宙库，展示多个系列的插画封面"
+      }
+    ]
+  },
+  "fan": {
+    "tour": "AIStory 3D 产品展示",
+    "views": "AIStory 产品视图",
+    "showView": "在中央手机上显示{view}",
+    "loading": "正在加载 AIStory 交互预览…",
+    "static": "当前显示 AIStory 静态预览。",
+    "webglUnavailable": "无法使用 WebGL，已显示静态预览。",
+    "loadFailed": "无法启动 3D 预览，已显示静态预览。",
+    "canvas": "四个 AIStory 手机界面在真实 3D 场景中轮换展示",
+    "pause": "暂停自动轮播",
+    "resume": "继续自动轮播",
+    "unavailable": "自动轮播暂不可用",
+    "reduced": "自动轮播已关闭（减少动态效果）",
+    "resumeHint": "仍可手动切换；结束操作后恢复自动轮播。",
+    "pauseHint": "完成当前移动后，暂停自动轮播。",
+    "centered": "{view}已居中 · 真实 3D · 屏幕内容保持不变",
+    "rotating": "{from} → {to} · 正在移动真实手机模型",
+    "contextLost": "3D 显示已中断，已恢复静态预览。",
+    "initial": "剧集已居中 · 真实 3D 轮播已就绪",
+    "labels": {
+      "episode": "剧集",
+      "universe": "宇宙",
+      "character": "角色",
+      "create": "创作"
+    }
+  },
+  "contact": {
+    "label": "联系开发者",
+    "email": "发送邮件",
+    "copy": "复制邮箱",
+    "copied": "邮箱地址已复制。",
+    "failed": "无法自动复制，请选中上方邮箱地址手动复制。",
+    "homeSubject": "leomonan.com — 反馈与联系",
+    "productSubject": "AIStory — 反馈与体验意向"
+  },
+  "demo": {
+    "kicker": "AIStory / 测试样片",
+    "title": "看一段真实故事。",
+    "description": "来自 AIStory 剧集播放器的测试录屏，后续将替换为正式展示样片。",
+    "note": "点击播放即可观看并收听。视频仅在你选择播放时从 GitHub 加载。",
+    "original": "打开原始视频",
+    "label": "AIStory 测试剧集录屏",
+    "unsupported": "你的浏览器不支持内嵌视频。",
+    "originalFallback": "打开原始录屏。",
+    "error": "暂时无法在此播放，请使用“打开原始视频”查看或下载文件。"
+  }
+}

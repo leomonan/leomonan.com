@@ -1,4 +1,7 @@
 ---
+import { getMessages } from '../i18n/index.js';
+const { locale = 'en' } = Astro.props;
+const { demo } = getMessages(locale);
 // Replace this URL when the owner supplies the final recording.
 // Keep large media in Release assets, not in this repository's Git history.
 const demoVideoUrl = 'https://github.com/leomonan/leomonan.com/releases/download/aistory-demo-media-v1/2026-10-21.23.59.08.mov';
@@ -6,11 +9,11 @@ const demoVideoUrl = 'https://github.com/leomonan/leomonan.com/releases/download
 
 <section class="demo-preview" id="aistory-demo" aria-labelledby="aistory-demo-title">
   <div class="demo-copy">
-    <p class="demo-kicker">AIStory / Test sample</p>
-    <h3 id="aistory-demo-title">See a story in action.</h3>
-    <p>A test recording from the AIStory episode player. This temporary clip will be replaced by the final showcase.</p>
-    <p class="demo-note" id="aistory-demo-note">Press play to watch with sound. The video loads from GitHub when you choose to play.</p>
-    <a class="demo-original" href={demoVideoUrl} target="_blank" rel="noopener noreferrer">Open original video <span aria-hidden="true">↗</span></a>
+    <p class="demo-kicker">{demo.kicker}</p>
+    <h3 id="aistory-demo-title">{demo.title}</h3>
+    <p>{demo.description}</p>
+    <p class="demo-note" id="aistory-demo-note">{demo.note}</p>
+    <a class="demo-original" href={demoVideoUrl} target="_blank" rel="noopener noreferrer">{demo.original} <span aria-hidden="true">↗</span></a>
   </div>
   <div class="demo-media">
     <video
@@ -19,14 +22,14 @@ const demoVideoUrl = 'https://github.com/leomonan/leomonan.com/releases/download
       controls
       playsinline
       preload="none"
-      aria-label="AIStory test episode recording"
+      aria-label={demo.label}
       aria-describedby="aistory-demo-note"
     >
-      Your browser does not support embedded video.
-      <a href={demoVideoUrl}>Open the original recording.</a>
+      {demo.unsupported}
+      <a href={demoVideoUrl}>{demo.originalFallback}</a>
     </video>
     <p class="demo-error" data-demo-error role="status" hidden>
-      This recording could not be played here. Use “Open original video” to open or download the file.
+      {demo.error}
     </p>
   </div>
 </section>

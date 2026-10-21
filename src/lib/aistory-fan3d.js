@@ -175,6 +175,8 @@ export async function mountAIStoryReal3DFan() {
   const host = document.querySelector('[data-real-fan-stage]');
   const root = document.querySelector('[data-real-fan]');
   if (!(host instanceof HTMLElement) || !(root instanceof HTMLElement)) return;
+  const copy = JSON.parse(root.dataset.fanCopy);
+  const viewLabel = (index) => copy.labels[STORY_VIEWS[index].id];
   const tabs = [...root.querySelectorAll('[data-real-fan-tab]')];
   const status = $(root, '[data-real-fan-status]');
   const fallback = $(host, '[data-real-fan-fallback]');
@@ -186,7 +188,7 @@ export async function mountAIStoryReal3DFan() {
       alpha: true, antialias: true, powerPreference: 'low-power',
     });
   } catch (error) {
-    if (status) status.textContent = 'WebGL unavailable. Static preview shown.';
+    if (status) status.textContent = copy.webglUnavailable;
     return;
   }
   renderer.setClearColor(0, 0);
@@ -253,15 +255,14 @@ export async function mountAIStoryReal3DFan() {
     if (shadow) scene.add(shadow.ground);
   } catch (error) {
     renderer.dispose();
-    if (status) status.textContent = 'Unable to start 3D preview: ' +
-      (error instanceof Error ? error.message : 'model load failed');
+    if (status) status.textContent = copy.loadFailed;
     return;
   }
 
   const canvas = renderer.domElement;
   canvas.className = 'real-fan-canvas';
   canvas.setAttribute('role', 'img');
-  canvas.setAttribute('aria-label', 'Four AIStory phone screens rotating through one real 3D fan');
+  canvas.setAttribute('aria-label', copy.canvas);
   canvas.tabIndex = 0;
   // Mount the transparent WebGL canvas above the SSR phone-shaped preview,
   // but keep the preview visible until the first actual rendered 3D frame.
@@ -299,12 +300,12 @@ export async function mountAIStoryReal3DFan() {
     if (!(autoplayButton instanceof HTMLButtonElement)) return;
     autoplayButton.hidden = false;
     autoplayButton.disabled = motion.matches || contextLost;
-    autoplayButton.textContent = contextLost ? 'Autoplay unavailable'
-      : motion.matches ? 'Autoplay off (reduced motion)'
-      : userPaused ? 'Resume autoplay' : 'Pause autoplay';
+    autoplayButton.textContent = contextLost ? copy.unavailable
+      : motion.matches ? copy.reduced
+      : userPaused ? copy.resume : copy.pause;
     autoplayButton.title = userPaused
-      ? 'Manual controls still work. Resume applies when the carousel is not being interacted with.'
-      : 'Finish the current move, then pause automatic rotation.';
+      ? copy.resumeHint
+      : copy.pauseHint;
   }
 
   function syncTabs() {
@@ -315,8 +316,7 @@ export async function mountAIStoryReal3DFan() {
       button.tabIndex = selected ? 0 : -1;
     });
     if (status && !animation) {
-      status.textContent = STORY_VIEWS[active].label +
-        ' centered · physical 3D · screen textures never crossfade';
+      status.textContent = copy.centered.replace('{view}', viewLabel(active));
     }
   }
 
@@ -432,7 +432,7 @@ export async function mountAIStoryReal3DFan() {
     });
     animation = { start: null, next, motions };
     if (status) status.textContent =
-      STORY_VIEWS[active].label + ' → ' + STORY_VIEWS[next].label + ' · rotating real phone meshes';
+      copy.rotating.replace('{from}', viewLabel(active)).replace('{to}', viewLabel(next));
     requestDraw();
   }
 
@@ -649,7 +649,7 @@ export async function mountAIStoryReal3DFan() {
     host.classList.remove('is-ready');
     fallback?.classList.remove('is-hidden');
     canvas.style.display = 'none';
-    if (status) status.textContent = '3D context lost. Static fallback restored.';
+    if (status) status.textContent = copy.contextLost;
   });
 
   const observer = new IntersectionObserver(([entry]) => {
@@ -707,6 +707,6 @@ export async function mountAIStoryReal3DFan() {
   syncAutoplayControl();
   resize();
   placeInstant(0);
-  if (status) status.textContent = 'Episode centered · true 3D device rotation ready';
+  if (status) status.textContent = copy.initial;
   scheduleTimer();
 }

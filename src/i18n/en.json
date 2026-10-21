@@ -1,0 +1,248 @@
+{
+  "common": {
+    "homeTitle": "Leo Monan — Independent Product Builder",
+    "homeDescription": "Leo Monan is an independent product builder creating AI-native products across storytelling, desktop tools, automation, and interactive systems.",
+    "productTitle": "AIStory — Stories that remember. | Leo Monan",
+    "productDescription": "A personal story creation tool for illustrated, voiced episodes, recurring characters, and worlds you can keep building. Explore AIStory, currently in active development.",
+    "shareAlt": "AIStory's illustrated story player and personal creation tools on three phones",
+    "skip": "Skip to content",
+    "brandHome": "Leo Monan home",
+    "navLabel": "Primary navigation",
+    "work": "Work",
+    "systems": "Systems",
+    "about": "About",
+    "allProducts": "All products",
+    "workflow": "Workflow",
+    "development": "Development",
+    "language": "Language",
+    "footer": "Building quietly. Shipping deliberately.",
+    "topics": "{name} topics",
+    "active": "Active development",
+    "releases": "View releases"
+  },
+  "home": {
+    "heroTitle": "Building products",
+    "heroPrefix": "for an ",
+    "heroAccent": "AI-native world.",
+    "aboutTitle": "From idea",
+    "aboutAccent": "to production.",
+    "status": "Independent product builder",
+    "lead": "I design and build products from idea to production — across storytelling, desktop tools, automation, and interactive systems.",
+    "selectedAction": "View selected work",
+    "current": "Current products",
+    "focusStory": "Flagship · Story worlds →",
+    "focusColook": "Desktop · AI agents →",
+    "focusTranslator": "Shipped · macOS →",
+    "selected": "Selected work",
+    "productsTitle": "Products, not demos.",
+    "productsLead": "A flagship story platform, a workspace for coding agents, and a shipped desktop understanding tool.",
+    "flagship": "01 / Flagship",
+    "storyKicker": "Persistent story worlds",
+    "storyTagline": "Stories that remember.",
+    "storyDescription": "A story creation system where characters, voices, visuals, and continuity can persist across episodes and series — turning one-off generation into a world that can keep growing.",
+    "storyTopics": "AIStory topics",
+    "tagWorlds": "Story worlds",
+    "tagCharacters": "Characters",
+    "tagVoice": "Voice",
+    "tagContinuity": "Continuity",
+    "explore": "Explore AIStory",
+    "overview": "Product overview · In development",
+    "desktop": "02 / Desktop",
+    "early": "Early access",
+    "running": "running · high",
+    "waiting": "waiting",
+    "ready": "ready",
+    "colookKicker": "Local-first agent workspace",
+    "colookTagline": "See what your coding agents are actually doing.",
+    "colookDescription": "A desktop workspace for Codex, Claude Code, and Cursor Agent — bringing sessions, runtime state, and permission handling into one place.",
+    "shipped": "Shipped",
+    "naturalMeaning": "Natural meaning",
+    "context": "Context",
+    "terms": "Terms",
+    "explain": "Explain",
+    "translatorKicker": "Desktop understanding layer",
+    "translatorTagline": "Understand without leaving your flow.",
+    "translatorDescription": "A low-interruption macOS tool that brings translation, explanation, terminology, and context next to the text or screenshot you’re already looking at.",
+    "systemsKicker": "Systems & experiments",
+    "systemsTitle": "Under the surface.",
+    "systemsDescription": "Some projects are products. Others are where I work on the reliability, runtime, and tooling ideas behind them.",
+    "principlesKicker": "How I think",
+    "principlesTitle": "Three things I care about.",
+    "aboutLead": "I’m an independent product builder focused on AI-native software.",
+    "aboutDescription": "I work across product thinking, interaction design, architecture, and implementation. I’m especially interested in products that remember, continue, and reliably get work done.",
+    "follow": "Follow the work on GitHub",
+    "systems": [
+      {
+        "number": "01",
+        "name": "AutoManus",
+        "type": "Deterministic AI workflows",
+        "description": "A local execution system that turns natural-language intent into verifiable, replayable desktop workflows.",
+        "tags": [
+          "Agents",
+          "Workflow runtime",
+          "Reliability"
+        ]
+      },
+      {
+        "number": "02",
+        "name": "Order602",
+        "type": "Interactive runtime experiments",
+        "description": "Experiments in reusable runtime foundations for persistent interactive and spatial experiences.",
+        "tags": [
+          "XR",
+          "Runtime",
+          "Worlds"
+        ]
+      },
+      {
+        "number": "03",
+        "name": "Commit Hooks",
+        "type": "Developer tooling",
+        "description": "Reusable Git quality gates for code hygiene, repository policy, and optional LLM-assisted review.",
+        "tags": [
+          "Git",
+          "Quality gates",
+          "LLM review"
+        ]
+      }
+    ],
+    "principles": [
+      [
+        "01",
+        "Persistence over novelty",
+        "The best AI products remember context and become more valuable with time."
+      ],
+      [
+        "02",
+        "Reliability over magic",
+        "Intelligence matters, but predictable execution and clear boundaries matter too."
+      ],
+      [
+        "03",
+        "Products over demos",
+        "I care about things people return to, not one-shot AI moments that disappear after first use."
+      ]
+    ]
+  },
+  "product": {
+    "openScreenshot": "Open full-resolution {view} screenshot in a new tab",
+    "title": "Stories that",
+    "titleAccent": "remember.",
+    "lead": "Create illustrated, voiced stories.",
+    "leadNext": "Keep your characters—and keep the story going.",
+    "workflowTitle": "One idea.",
+    "workflowAccent": "A world to return to.",
+    "continuityTitle": "Not just a story.",
+    "continuityAccent": "Your story world.",
+    "developmentTitle": "Being built.",
+    "developmentAccent": "With care.",
+    "status": "AIStory · In development",
+    "context": "A personal creative space for the stories you want to return to.",
+    "workflowAction": "See the workflow",
+    "developmentAction": "Development status",
+    "preview": "Product preview · Screens shown in Chinese",
+    "caption": "Four views. One connected creative space.",
+    "workflowKicker": "01 / The creative loop",
+    "workflowLead": "From the first prompt to the next episode. A look inside the current product—not a separate interactive app.",
+    "fullSize": "View full-size",
+    "screensNote": "Actual product screens. The previews above are screenshots; they do not play audio or generate stories on this website.",
+    "continuityKicker": "02 / Built for the next chapter",
+    "continuityLead": "Bring episodes into series, and series into a personal universe. Revisit your characters and story direction when it is time to create again.",
+    "continuityDetail": "The goal is continuity, not a fresh start with every prompt. Long-form consistency and generation controls are still being tested during development.",
+    "personalNote": "Your personal library. Not a public feed.",
+    "structure": "How your stories fit together",
+    "illustrative": "Illustrative structure",
+    "universe": "Universe",
+    "universeTitle": "A home for your stories",
+    "universeMeta": "World · Characters · Creative direction",
+    "series": "Series",
+    "seriesTitle": "A story that keeps growing",
+    "firstEpisode": "First episode",
+    "beginStory": "Begin the story",
+    "nextEpisode": "Next episode",
+    "returnWorld": "Return to your world",
+    "continue": "Continue creating",
+    "nextDirection": "A direction for what comes next",
+    "developmentKicker": "03 / Where things stand",
+    "developmentLead": "AIStory is being developed and tested by Leo Monan. This page introduces the product; it is not an open sign-up or a public app release.",
+    "developmentNote": "Public access, supported platforms, and release timing will be shared when confirmed.",
+    "follow": "Follow Leo on GitHub",
+    "back": "Back to all products",
+    "steps": [
+      {
+        "id": "create",
+        "number": "01",
+        "title": "Start with an idea.",
+        "description": "Describe a setting, a character, or the story you want to tell. Give your next creation a direction.",
+        "alt": "AIStory creation screen with a story-description composer"
+      },
+      {
+        "id": "character",
+        "number": "02",
+        "title": "Meet your characters.",
+        "description": "Shape the cast, their visual identities, and their voices. Keep the details of your story in one place.",
+        "alt": "AIStory character settings showing a character portrait and identity details"
+      },
+      {
+        "id": "episode",
+        "number": "03",
+        "title": "Watch. Listen. Read.",
+        "description": "Explore an episode through illustrations, narration, and on-screen text, together in one player.",
+        "alt": "AIStory episode player showing an illustrated scene, narration text, and playback controls"
+      },
+      {
+        "id": "universe",
+        "number": "04",
+        "title": "Keep the story going.",
+        "description": "Return to your personal story library. Organize series and episodes, then continue creating in the same world.",
+        "alt": "AIStory personal story-universe library with illustrated series covers"
+      }
+    ]
+  },
+  "fan": {
+    "tour": "AIStory 3D product tour",
+    "views": "AIStory product views",
+    "showView": "Show {view} on the central phone",
+    "loading": "Loading interactive AIStory preview…",
+    "static": "Static AIStory preview available.",
+    "webglUnavailable": "WebGL unavailable. Static preview shown.",
+    "loadFailed": "Unable to start 3D preview. Static preview shown.",
+    "canvas": "Four AIStory phone screens rotating through one real 3D fan",
+    "pause": "Pause autoplay",
+    "resume": "Resume autoplay",
+    "unavailable": "Autoplay unavailable",
+    "reduced": "Autoplay off (reduced motion)",
+    "resumeHint": "Manual controls still work. Resume applies when the carousel is not being interacted with.",
+    "pauseHint": "Finish the current move, then pause automatic rotation.",
+    "centered": "{view} centered · physical 3D · screen textures never crossfade",
+    "rotating": "{from} → {to} · rotating real phone meshes",
+    "contextLost": "3D context lost. Static fallback restored.",
+    "initial": "Episode centered · true 3D device rotation ready",
+    "labels": {
+      "episode": "Episode",
+      "universe": "Universe",
+      "character": "Character",
+      "create": "Create"
+    }
+  },
+  "contact": {
+    "label": "Contact the developer",
+    "email": "Email Leo",
+    "copy": "Copy email",
+    "copied": "Email address copied.",
+    "failed": "Copy is unavailable. Select and copy the address above.",
+    "homeSubject": "leomonan.com — Feedback / Contact",
+    "productSubject": "AIStory — Feedback / Preview interest"
+  },
+  "demo": {
+    "kicker": "AIStory / Test sample",
+    "title": "See a story in action.",
+    "description": "A test recording from the AIStory episode player. This temporary clip will be replaced by the final showcase.",
+    "note": "Press play to watch with sound. The video loads from GitHub when you choose to play.",
+    "original": "Open original video",
+    "label": "AIStory test episode recording",
+    "unsupported": "Your browser does not support embedded video.",
+    "originalFallback": "Open the original recording.",
+    "error": "This recording could not be played here. Use “Open original video” to open or download the file."
+  }
+}

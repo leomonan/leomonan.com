@@ -1,13 +1,16 @@
 ---
 import { PUBLIC_CONTACT_EMAIL, contactDetails } from '../lib/site-contact.js';
-const contact = contactDetails(PUBLIC_CONTACT_EMAIL, Astro.props.subject);
+import { getMessages } from '../i18n/index.js';
+const { locale = 'en' } = Astro.props;
+const { contact: copy } = getMessages(locale);
+const contact = contactDetails(PUBLIC_CONTACT_EMAIL, Astro.props.subject || copy.productSubject);
 ---
 {contact && (
-  <div class="contact-actions" data-public-contact data-email={contact.email} role="group" aria-label="Contact the developer">
+  <div class="contact-actions" data-public-contact data-email={contact.email} data-copy-success={copy.copied} data-copy-failure={copy.failed} role="group" aria-label={copy.label}>
     <p class="contact-address">{contact.email}</p>
     <div class="contact-buttons">
-      <a href={contact.href}>Email Leo <span aria-hidden="true">↗</span></a>
-      <button type="button" data-copy-contact hidden>Copy email</button>
+      <a href={contact.href}>{copy.email} <span aria-hidden="true">↗</span></a>
+      <button type="button" data-copy-contact hidden>{copy.copy}</button>
     </div>
     <p class="copy-status" data-copy-status role="status" aria-live="polite"></p>
   </div>
@@ -24,9 +27,9 @@ const contact = contactDetails(PUBLIC_CONTACT_EMAIL, Astro.props.subject);
       try {
         if (!root.dataset.email || !navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
         await navigator.clipboard.writeText(root.dataset.email);
-        status.textContent = 'Email address copied.';
+        status.textContent = root.dataset.copySuccess || '';
       } catch {
-        status.textContent = 'Copy is unavailable. Select and copy the address above.';
+        status.textContent = root.dataset.copyFailure || '';
       } finally {
         button.disabled = false;
       }

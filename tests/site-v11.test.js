@@ -17,7 +17,7 @@ test('contact URI safely encodes its subject and rejects unsafe address input', 
     assert.throws(()=>contactDetails(invalid), TypeError);
 });
 test('product directory exposes three links and valid destinations', async () => {
-  const home = await read('src/pages/index.astro');
+  const home = await read('src/views/HomePage.astro');
   assert.equal((home.match(/class="focus-row focus-link"/g)||[]).length,3);
   for (const id of ['colook','easytranslator']) {
     assert.ok(home.includes(`href="#${id}"`));
@@ -43,11 +43,12 @@ test('pause remains explicit through visibility, reduced motion and context loss
   assert.match(runtime,/contextLost = true;\n    syncAutoplayControl/);
 });
 test('both pages use the gated contact actions; copies report success only after writing', async () => {
-  for (const path of ['src/pages/index.astro','src/pages/aistory.astro']) {
+  for (const path of ['src/views/HomePage.astro','src/views/AIStoryPage.astro']) {
     assert.ok((await read(path)).includes('<ContactActions'));
   }
   const component = await read('src/components/ContactActions.astro');
   assert.ok(component.includes('{contact && ('));
-  assert.ok(component.indexOf('await navigator.clipboard.writeText') < component.indexOf("status.textContent = 'Email address copied.'"));
-  assert.ok(component.includes('Copy is unavailable. Select and copy the address above.'));
+  assert.ok(component.indexOf('await navigator.clipboard.writeText') < component.indexOf('status.textContent = root.dataset.copySuccess'));
+  assert.ok(component.includes('data-copy-failure={copy.failed}'));
+  assert.ok(component.includes('status.textContent = root.dataset.copyFailure'));
 });

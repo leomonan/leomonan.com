@@ -54,7 +54,7 @@ try {
   }
   assert.ok(ready,'Astro real page must start');
   browser=await chromium.launch({
-    channel:'chrome',headless:true,
+    ...(process.env.BROWSER_EXECUTABLE ? { executablePath: process.env.BROWSER_EXECUTABLE } : { channel:'chrome' }),headless:true,
     args:['--no-sandbox','--enable-webgl','--use-gl=angle','--use-angle=swiftshader',
       '--enable-unsafe-swiftshader','--disable-dev-shm-usage']
   });
@@ -62,16 +62,20 @@ try {
   for(const view of [{name:'desktop',width:1440,height:960},{name:'mobile',width:390,height:844}]){
     const context=await browser.newContext({viewport:{width:view.width,height:view.height}});
     const page=await context.newPage();
+    await page.clock.install();
     const errors=[];
     page.on('pageerror',e=>errors.push(e.message));
     page.on('console',e=>{if(e.type()==='error')errors.push(e.text());});
     await page.addInitScript(()=>{window.__FAN_E2E__=true;});
-    await page.goto('http://127.0.0.1:4332/#work',{waitUntil:'domcontentloaded'});
+    await page.goto('http://127.0.0.1:4332' + (process.env.K_MOTION_ROUTE || '/#work'),{waitUntil:'domcontentloaded'});
     await page.locator('.flagship-card').scrollIntoViewIfNeeded();
     await page.waitForFunction(()=>window.__fanMotionProbe &&
       document.querySelector('[data-real-fan-fallback]')?.classList.contains('is-hidden'),
       null,{timeout:80000});
     await page.locator('[data-real-fan]').hover();
+    // Software-GPU stalls must not skip the entire orientation interval.
+    // Only the test clock is controlled; production timing remains unchanged.
+    await page.clock.pauseAt(new Date(await page.evaluate(()=>Date.now()+1000)));
 
     // Forward and backward movements both tested across two widths.
     for(const [step,selected] of [1,0,3,0].entries()){
@@ -80,12 +84,12 @@ try {
         document.querySelector('[data-real-fan-tab="'+index+'"]').click();
         window.__motionFrames.push(window.__fanMotionProbe());
       },selected);
-      await page.waitForFunction(index=>{
-        const labels=['Episode','Universe','Character','Create'];
-        const text=document.querySelector('[data-real-fan-status]')?.textContent||'';
-        return text.includes(labels[index]+' centered') &&
-          window.__fanMotionProbe().active===index;
-      },selected,{timeout:25000});
+      // Every clock step delivers an actual RAF and WebGL render. The original
+      // 820ms duration, easing, poses and all numeric assertions are unchanged.
+      for (let frame=0; frame<14; frame++) await page.clock.fastForward(80);
+      const end=await page.evaluate(()=>window.__fanMotionProbe());
+      assert.equal(end.active,selected,'The actual transition must finish');
+      assert.equal(end.routes.length,0,'No motion remains after its duration');
       const snaps=await page.evaluate(()=>{
         const frames=window.__motionFrames;
         window.__motionFrames=null;
@@ -140,6 +144,7 @@ try {
         entryCrossing:startIn.crossing,exitCrossing:startOut.crossing,frames:motion.length}));
       verified++;
     }
+    await page.clock.resume();
     assert.deepEqual(errors,[],'No WebGL/runtime errors in '+view.name);
     const width=await page.evaluate(()=>({
       document:document.documentElement.scrollWidth,viewport:innerWidth}));
@@ -151,6 +156,7 @@ try {
   }
   console.log('K_UPRIGHT_MOTION_ACCEPTANCE='+JSON.stringify({
     status:'PASS',steps:verified,viewports:2,directions:'both',
+    timing:'80ms controlled browser-clock samples; production duration unchanged',
     entry:'upright into K inside viewport',exit:'K into upright before leaving',
     browserErrors:0
   }));

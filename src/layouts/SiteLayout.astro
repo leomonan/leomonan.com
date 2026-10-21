@@ -1,23 +1,20 @@
 ---
-interface Props {
-  title?: string;
-  description?: string;
-  path?: '/' | '/aistory';
-}
-const {
-  title = 'Leo Monan — Independent Product Builder',
-  description = 'Leo Monan is an independent product builder creating AI-native products across storytelling, desktop tools, automation, and interactive systems.',
-  path = '/',
-} = Astro.props;
-const productPage = path === '/aistory';
-const canonical = new URL(path, 'https://leomonan.com').href;
+import { getMessages, LOCALES, localizedPath, SITE_URL } from '../i18n/index.js';
+interface Props { locale?: 'en' | 'zh'; page?: 'home' | 'aistory'; }
+const { locale = 'en', page = 'home' } = Astro.props;
+const { common } = getMessages(locale);
+const productPage = page === 'aistory';
+const homePath = localizedPath(locale, 'home');
+const path = localizedPath(locale, page);
+const title = productPage ? common.productTitle : common.homeTitle;
+const description = productPage ? common.productDescription : common.homeDescription;
+const canonical = new URL(path, SITE_URL).href;
 const navigation = productPage
-  ? [{ label: 'All products', href: '/#work' }, { label: 'Workflow', href: '#workflow' }, { label: 'Development', href: '#development' }]
-  : [{ label: 'Work', href: '#work' }, { label: 'Systems', href: '#systems' }, { label: 'About', href: '#about' }];
+  ? [{ label: common.allProducts, href: homePath + '#work' }, { label: common.workflow, href: '#workflow' }, { label: common.development, href: '#development' }]
+  : [{ label: common.work, href: '#work' }, { label: common.systems, href: '#systems' }, { label: common.about, href: '#about' }];
 ---
-
 <!doctype html>
-<html lang="en">
+<html lang={LOCALES[locale].lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,37 +25,61 @@ const navigation = productPage
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={LOCALES[locale].og} />
+    {Object.entries(LOCALES).filter(([code]) => code !== locale).map(([, value]) => <meta property="og:locale:alternate" content={value.og} />)}
     {productPage && <>
       <meta property="og:image" content="https://leomonan.com/images/work/aistory-fan3d-poster-desktop.webp" />
-      <meta property="og:image:alt" content="AIStory's illustrated story player and personal creation tools on three phones" />
+      <meta property="og:image:alt" content={common.shareAlt} />
     </>}
     <meta name="twitter:card" content={productPage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="canonical" href={canonical} />
+    {Object.entries(LOCALES).map(([code, value]) => <link rel="alternate" hreflang={value.lang} href={new URL(localizedPath(code, page), SITE_URL).href} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(localizedPath('en', page), SITE_URL).href} />
     <title>{title}</title>
   </head>
   <body>
-    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="skip-link" href="#top">{common.skip}</a>
     <div class="site-shell">
       <header class="site-header">
-        <a class="brand" href="/" aria-label="Leo Monan home">
-          <span class="brand-mark">LM</span>
-          <span>Leo Monan</span>
+        <a class="brand" href={homePath} aria-label={common.brandHome}>
+          <span class="brand-mark">LM</span><span>Leo Monan</span>
         </a>
-        <nav aria-label="Primary navigation" data-page={productPage ? 'aistory' : 'home'}>
-          {navigation.map(link => <a href={link.href}>{link.label}</a>)}
-        </nav>
+        <div class="header-actions">
+          <nav aria-label={common.navLabel} data-page={page}>
+            {navigation.map(link => <a href={link.href}>{link.label}</a>)}
+          </nav>
+          <div class="language-switch" role="group" aria-label={common.language}>
+            {Object.entries(LOCALES).map(([code, value]) => (
+              <a href={localizedPath(code, page)} lang={value.lang} hreflang={value.lang}
+                data-language-link={code} aria-label={value.name}
+                aria-current={locale === code ? 'page' : undefined}>{value.short}</a>
+            ))}
+          </div>
+        </div>
       </header>
       <slot />
-      <footer class="site-footer">
-        <span>© 2026 Leo Monan</span>
-        <span>Building quietly. Shipping deliberately.</span>
-      </footer>
+      <footer class="site-footer"><span>© 2026 Leo Monan</span><span>{common.footer}</span></footer>
     </div>
   </body>
 </html>
-
+<script>
+  // URLs own the language: no automatic redirects or client-side translation.
+  // Hashes are shared by paired pages; preserve the visitor's current section.
+  const preserveSection = () => {
+    for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-language-link]')) {
+      const url = new URL(link.href);
+      url.hash = location.hash;
+      url.search = location.search;
+      link.href = url.href;
+    }
+  };
+  preserveSection();
+  window.addEventListener('hashchange', preserveSection);
+</script>
 <style is:global>
 
   :root {
@@ -95,6 +116,12 @@ const navigation = productPage
 
   .brand { display: inline-flex; gap: 11px; align-items: center; text-decoration: none; font-weight: 680; letter-spacing: -0.025em; }
   .brand-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--ink); color: white; font-size: 0.67rem; }
+  .header-actions { display: flex; align-items: center; gap: clamp(16px, 3vw, 34px); min-width: 0; }
+  .language-switch { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.7); flex-shrink: 0; }
+  .language-switch a { min-height: 34px; min-width: 38px; padding: 7px 9px; display: flex; align-items: center; justify-content: center; text-decoration: none; border-radius: 8px; font-size: .78rem; color: var(--muted); }
+  .language-switch a[aria-current="page"] { background: var(--ink); color: white; font-weight: 650; }
+  .language-switch a:hover:not([aria-current]) { color: var(--blue); background: var(--blue-soft); }
+
   .site-header nav { display: flex; gap: clamp(18px, 3vw, 38px); }
   .site-header nav a { text-decoration: none; color: var(--muted); font-size: 0.88rem; transition: color 150ms ease; }
   .site-header nav a:hover, .site-header nav a:focus-visible { color: var(--ink); }
@@ -122,5 +149,23 @@ const navigation = productPage
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition-duration: 0.01ms !important; }
+  }
+
+  /* Chinese needs different tracking and line height, not a separate design. */
+  html:lang(zh-Hans) { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; }
+  html:lang(zh-Hans) #top :is(h1,h2,h3) { letter-spacing: -.025em; line-height: 1.24; text-wrap: balance; }
+  html:lang(zh-Hans) #top :is(h1,h2) em { font-family: inherit; font-style: normal; font-weight: 550; }
+  html:lang(zh-Hans) #top .hero h1 { font-size: clamp(2.5rem, 5.5vw, 5.2rem); }
+  html:lang(zh-Hans) #top :is(.hero-lead,.project-description,.workflow-step > p) { line-height: 1.85; }
+  @media (max-width: 620px) {
+    .header-actions { gap: 12px; }
+    .language-switch a { min-height: 34px; padding-inline: 7px; min-width: 35px; }
+  }
+  @media (max-width: 480px) {
+    .site-header { height: auto; min-height: 92px; padding: 12px 0; display: grid; grid-template-columns: 1fr auto; row-gap: 10px; }
+    .header-actions { display: contents; }
+    .language-switch { grid-column: 2; grid-row: 1; }
+    .site-header nav { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; gap: 24px; }
+    .site-header nav[data-page="home"] a:nth-child(2), .site-header nav[data-page="aistory"] a:first-child { display: inline; }
   }
 </style>

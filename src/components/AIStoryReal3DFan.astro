@@ -1,5 +1,8 @@
 ---
 import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
+import { getMessages, format } from '../i18n/index.js';
+const { locale = 'en' } = Astro.props;
+const { fan } = getMessages(locale);
 /**
  * Production real-GLB carousel. Tab labels and order come from the same
  * STORY_VIEWS contract as the runtime; no second hardcoded 4-item list.
@@ -13,7 +16,7 @@ import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
 
 ---
 
-<div class="fan-carousel" data-real-fan aria-label="AIStory 3D product tour">
+<div class="fan-carousel" data-real-fan data-fan-copy={JSON.stringify(fan)} aria-label={fan.tour}>
   <div class="fan-stage" data-real-fan-stage>
     <div class="fan-fallback" data-real-fan-fallback aria-hidden="true">
       <picture class="fan-poster" data-fan-poster="3d-scene">
@@ -35,7 +38,7 @@ import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
     </div>
   </div>
 
-  <div class="fan-tabs" role="tablist" aria-label="AIStory product views">
+  <div class="fan-tabs" role="tablist" aria-label={fan.views}>
     {views.map((view, index) => (
       <button
         class:list={['fan-tab', { 'is-active': index === 0 }]}
@@ -43,17 +46,17 @@ import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
         role="tab"
         data-real-fan-tab={index}
         aria-selected={index === 0 ? 'true' : 'false'}
-        aria-label={'Show ' + view.label + ' on the central phone'}
+        aria-label={format(fan.showView, { view: fan.labels[view.id] })}
         tabindex={index === 0 ? '0' : '-1'}
         disabled
       >
         <span>{String(index + 1).padStart(2, '0')}</span>
-        <strong>{view.label}</strong>
+        <strong>{fan.labels[view.id]}</strong>
       </button>
     ))}
   </div>
-  <button class="fan-autoplay" type="button" data-real-fan-autoplay hidden>Pause autoplay</button>
-  <p class="fan-status" data-real-fan-status aria-live="polite">Loading interactive AIStory preview…</p>
+  <button class="fan-autoplay" type="button" data-real-fan-autoplay hidden>{fan.pause}</button>
+  <p class="fan-status" data-real-fan-status aria-live="polite">{fan.loading}</p>
 </div>
 
 <script>
@@ -61,6 +64,7 @@ import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
   // The scene-derived first-frame poster stays visible until WebGL paints.
   const root = document.querySelector('[data-real-fan]');
   if (root instanceof HTMLElement) {
+    const copy = JSON.parse(root.dataset.fanCopy || '{}');
     let requested = false;
     const boot = () => {
       if (requested) return;
@@ -69,7 +73,7 @@ import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
         .then(({ mountAIStoryReal3DFan }) => mountAIStoryReal3DFan())
         .catch(() => {
           const status = root.querySelector('[data-real-fan-status]');
-          if (status) status.textContent = 'Static AIStory preview available.';
+          if (status) status.textContent = copy.static;
         });
     };
     if ('IntersectionObserver' in window) {
