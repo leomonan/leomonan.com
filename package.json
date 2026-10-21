@@ -1,0 +1,22 @@
+{
+  "name": "leomonan.com",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "astro": "^7.4.0",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.151.1"
+  }
+}

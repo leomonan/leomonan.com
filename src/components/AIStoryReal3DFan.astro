@@ -1,0 +1,240 @@
+---
+import { STORY_VIEWS as views } from '../lib/aistory-fan3d-layout.js';
+/**
+ * Production real-GLB carousel. Tab labels and order come from the same
+ * STORY_VIEWS contract as the runtime; no second hardcoded 4-item list.
+ * A static preview is SSR-rendered; WebGL boots near the viewport.
+ */
+
+// Scene posters are generated from the *same* initial WebGL frame. They are
+// derived build artifacts, not a second independent CSS layout of three phones.
+// Regenerate with scripts/generate-aistory-fan3d-posters.mjs after changing
+// the camera, phone positions, model, textures or lighting.
+
+---
+
+<div class="fan-carousel" data-real-fan aria-label="AIStory 3D product tour">
+  <div class="fan-stage" data-real-fan-stage>
+    <div class="fan-fallback" data-real-fan-fallback aria-hidden="true">
+      <picture class="fan-poster" data-fan-poster="3d-scene">
+        <source media="(max-width: 480px)"
+          srcset="/images/work/aistory-fan3d-poster-mobile.webp"/>
+        <source media="(max-width: 700px)"
+          srcset="/images/work/aistory-fan3d-poster-small.webp"/>
+        <source media="(max-width: 1100px)"
+          srcset="/images/work/aistory-fan3d-poster-tablet.webp"/>
+        <img
+          src="/images/work/aistory-fan3d-poster-desktop.webp"
+          width="1472"
+          height="1140"
+          loading="eager"
+          decoding="async"
+          alt=""
+        />
+      </picture>
+    </div>
+  </div>
+
+  <div class="fan-tabs" role="tablist" aria-label="AIStory product views">
+    {views.map((view, index) => (
+      <button
+        class:list={['fan-tab', { 'is-active': index === 0 }]}
+        type="button"
+        role="tab"
+        data-real-fan-tab={index}
+        aria-selected={index === 0 ? 'true' : 'false'}
+        aria-label={'Show ' + view.label + ' on the central phone'}
+        tabindex={index === 0 ? '0' : '-1'}
+        disabled
+      >
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        <strong>{view.label}</strong>
+      </button>
+    ))}
+  </div>
+  <p class="fan-status" data-real-fan-status aria-live="polite">Loading interactive AIStory preview…</p>
+</div>
+
+<script>
+  // The GLB and Three.js should not delay the homepage hero or initial text.
+  // The scene-derived first-frame poster stays visible until WebGL paints.
+  const root = document.querySelector('[data-real-fan]');
+  if (root instanceof HTMLElement) {
+    let requested = false;
+    const boot = () => {
+      if (requested) return;
+      requested = true;
+      void import('../lib/aistory-fan3d.js')
+        .then(({ mountAIStoryReal3DFan }) => mountAIStoryReal3DFan())
+        .catch(() => {
+          const status = root.querySelector('[data-real-fan-status]');
+          if (status) status.textContent = 'Static AIStory preview available.';
+        });
+    };
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        observer.disconnect();
+        boot();
+      }, { rootMargin: '250px 0px' });
+      observer.observe(root);
+    } else boot();
+  }
+</script>
+
+<style>
+  .fan-carousel {
+    width: 100%;
+    min-width: 0;
+    align-self: center;
+  }
+
+  .fan-stage {
+    position: relative;
+    width: 100%;
+    max-width: 850px;
+    height: 570px;
+    overflow: hidden;
+    margin: 0 auto;
+    border-radius: 22px;
+    background: radial-gradient(
+      ellipse 58% 53% at 50% 49%,
+      rgba(255,255,255,.30),
+      rgba(255,255,255,0) 76%
+    );
+  }
+
+  .fan-stage :global(.real-fan-canvas) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    touch-action: pan-y;
+    outline-offset: -3px;
+  }
+
+  .fan-stage :global(.real-fan-canvas:focus-visible) {
+    outline: 2px solid #5572eb;
+  }
+
+  .fan-fallback {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+  /* One source of truth: initial real 3D WebGL frame, not hand-positioned
+     WebPs. Transparent poster sits above the same lavender stage gradient. */
+  .fan-poster {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: hidden;
+  }
+  .fan-poster img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
+  .fan-fallback.is-hidden { display: none; }
+
+  .fan-tabs {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    width: 71%;
+    margin: 8px auto 0;
+  }
+
+  .fan-tab {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 7px;
+    min-width: 0;
+    padding: 8px 9px 7px;
+    border: 1px solid rgba(84,96,136,.075);
+    border-radius: 11px;
+    color: #687087;
+    background: linear-gradient(
+      180deg,
+      rgba(255,255,255,.22),
+      rgba(255,255,255,.07)
+    );
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.34),
+      0 3px 9px rgba(35,47,92,.026);
+    cursor: pointer;
+    text-align: center;
+    transition: background 180ms ease, border-color 180ms ease,
+      color 180ms ease, box-shadow 180ms ease;
+  }
+  .fan-tab:hover:not(:disabled) {
+    color: #4d566e;
+    border-color: rgba(84,96,136,.13);
+    background: linear-gradient(
+      180deg,
+      rgba(255,255,255,.38),
+      rgba(255,255,255,.13)
+    );
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.54),
+      0 5px 12px rgba(35,47,92,.045);
+  }
+  .fan-tab span {
+    color: #9ca3b7;
+    font-size: .58rem;
+    letter-spacing: .02em;
+  }
+  .fan-tab strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: .77rem;
+    font-weight: 650;
+  }
+  .fan-tab.is-active {
+    border-color: rgba(53,88,255,.16);
+    color: #1a2d80;
+    background: linear-gradient(
+      180deg,
+      rgba(255,255,255,.72),
+      rgba(255,255,255,.44)
+    );
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
+      0 5px 12px rgba(36,54,112,.075),
+      inset 0 -2px 0 rgba(53,88,255,.68);
+  }
+  .fan-tab.is-active span { color: #6d83e9; }
+  .fan-tab:disabled { cursor: default; }
+  .fan-tab:focus-visible { outline: 2px solid #3558ff; outline-offset: 2px; }
+  .fan-status {
+    margin: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    position: absolute;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1100px) {
+    .fan-carousel { width: min(100%, 850px); margin: 0 auto; }
+    .fan-stage { height: 548px; }
+  }
+  @media (max-width: 700px) {
+    .fan-stage { height: 452px; }
+    .fan-tabs { width: 94%; gap: 5px; }
+    .fan-tab { padding: 8px 6px 7px; border-radius: 9px; }
+    .fan-tab span { display: none; }
+    .fan-tab strong { font-size: .68rem; }
+  }
+  @media (max-width: 480px) {
+    .fan-stage { height: 340px; border-radius: 18px; }
+    .fan-tabs { width: 100%; gap: 5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fan-tab { transition-duration: .01ms; }
+  }
+</style>
