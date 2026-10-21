@@ -1,0 +1,230 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import AIStoryReal3DFan from '../components/AIStoryReal3DFan.astro';
+import { STORY_VIEWS } from '../lib/aistory-fan3d-layout.js';
+
+// Copy explains the existing product screens; image crops share the runtime contract.
+const steps = [
+  { id: 'create', number: '01', title: 'Start with an idea.', description: 'Describe a setting, a character, or the story you want to tell. Give your next creation a direction.', alt: 'AIStory creation screen with a story-description composer' },
+  { id: 'character', number: '02', title: 'Meet your characters.', description: 'Shape the cast, their visual identities, and their voices. Keep the details of your story in one place.', alt: 'AIStory character settings showing a character portrait and identity details' },
+  { id: 'episode', number: '03', title: 'Watch. Listen. Read.', description: 'Explore an episode through illustrations, narration, and on-screen text, together in one player.', alt: 'AIStory episode player showing an illustrated scene, narration text, and playback controls' },
+  { id: 'universe', number: '04', title: 'Keep the story going.', description: 'Return to your personal story library. Organize series and episodes, then continue creating in the same world.', alt: 'AIStory personal story-universe library with illustrated series covers' },
+].map(step => {
+  const view = STORY_VIEWS.find(view => view.id === step.id);
+  if (!view) throw new Error('Missing AIStory screen: ' + step.id);
+  const { x, y, w, h } = view.crop;
+  return {
+    ...step,
+    src: `/images/work/aistory-${step.id}.webp`,
+    aspect: `${w} / ${h}`,
+    cropStyle: `width:${1122 / w * 100}%;height:${1402 / h * 100}%;left:${-x / w * 100}%;top:${-y / h * 100}%;`,
+  };
+});
+---
+
+<SiteLayout
+  path="/aistory"
+  title="AIStory — Stories that remember. | Leo Monan"
+  description="A personal story creation tool for illustrated, voiced episodes, recurring characters, and worlds you can keep building. Explore AIStory, currently in active development."
+>
+  <main id="top">
+    <section class="aistory-hero flagship-card" aria-labelledby="product-title">
+      <div class="hero-copy">
+        <p class="product-status"><span aria-hidden="true"></span> AIStory · In development</p>
+        <h1 id="product-title">Stories that<br /><em>remember.</em></h1>
+        <p class="hero-description">Create illustrated, voiced stories.<br class="desktop-break" /> Keep your characters—and keep the story going.</p>
+        <p class="hero-context">A personal creative space for the stories you want to return to.</p>
+        <div class="product-actions">
+          <a class="button button-primary" href="#workflow">See the workflow <span aria-hidden="true">↘</span></a>
+          <a class="development-link" href="#development">Development status <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="preview-note">Product preview · Screens shown in Chinese</p>
+      </div>
+      <div class="hero-showcase">
+        <AIStoryReal3DFan />
+        <p class="showcase-caption">Four views. One connected creative space.</p>
+      </div>
+    </section>
+
+    <section class="workflow-section" id="workflow" aria-labelledby="workflow-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 / The creative loop</p>
+          <h2 id="workflow-title">One idea.<br />A world to return to.</h2>
+        </div>
+        <p class="section-lead">From the first prompt to the next episode. A look inside the current product—not a separate interactive app.</p>
+      </div>
+      <ol class="workflow-grid">
+        {steps.map(step => (
+          <li class="workflow-step">
+            <div class="step-label"><span>{step.number}</span><h3>{step.title}</h3></div>
+            <a class="screen-link" href={step.src} target="_blank" rel="noopener" aria-label={`Open full-resolution ${step.id} screenshot in a new tab`}>
+              <div class="screen-window" style={`aspect-ratio:${step.aspect}`}>
+                <img src={step.src} alt={step.alt} width="1122" height="1402" loading="lazy" decoding="async" style={step.cropStyle} />
+              </div>
+              <span class="screen-link-caption">View full-size <span aria-hidden="true">↗</span></span>
+            </a>
+            <p>{step.description}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="screens-note">Actual product screens. The previews above are screenshots; they do not play audio or generate stories on this website.</p>
+    </section>
+
+    <section class="continuity-section" aria-labelledby="continuity-title">
+      <div class="continuity-copy">
+        <p class="eyebrow">02 / Built for the next chapter</p>
+        <h2 id="continuity-title">Not just a story.<br /><em>Your story world.</em></h2>
+        <p>Bring episodes into series, and series into a personal universe. Revisit your characters and story direction when it is time to create again.</p>
+        <p class="continuity-detail">The goal is continuity, not a fresh start with every prompt. Long-form consistency and generation controls are still being tested during development.</p>
+        <div class="personal-note"><span aria-hidden="true">↳</span> Your personal library. Not a public feed.</div>
+      </div>
+      <figure class="story-structure">
+        <figcaption>How your stories fit together <span>Illustrative structure</span></figcaption>
+        <div class="universe-node"><span class="node-label">Universe</span><strong>A home for your stories</strong><small>World · Characters · Creative direction</small></div>
+        <div class="series-branch">
+          <div class="series-node"><span class="node-label">Series</span><strong>A story that keeps growing</strong></div>
+          <div class="episodes">
+            <div class="episode-node"><span>01</span><div><strong>First episode</strong><small>Begin the story</small></div></div>
+            <div class="episode-node"><span>02</span><div><strong>Next episode</strong><small>Return to your world</small></div></div>
+            <div class="episode-node continue-node"><span aria-hidden="true">＋</span><div><strong>Continue creating</strong><small>A direction for what comes next</small></div></div>
+          </div>
+        </div>
+      </figure>
+    </section>
+
+    <section class="development-section" id="development" aria-labelledby="development-title">
+      <div>
+        <p class="eyebrow">03 / Where things stand</p>
+        <h2 id="development-title">Being built.<br /><em>With care.</em></h2>
+      </div>
+      <div class="development-copy">
+        <span class="development-badge">Active development</span>
+        <p>AIStory is being developed and tested by Leo Monan. This page introduces the product; it is not an open sign-up or a public app release.</p>
+        <p>Public access, supported platforms, and release timing will be shared when confirmed.</p>
+        <div class="development-actions">
+          <a class="button button-primary" href="https://github.com/leomonan" target="_blank" rel="noreferrer">Follow Leo on GitHub <span aria-hidden="true">↗</span></a>
+          <a class="back-link" href="/#work">Back to all products <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
+
+<style>
+  main { padding-top: 36px; }
+  .aistory-hero {
+    display: grid;
+    grid-template-columns: minmax(0, .76fr) minmax(560px, 1.24fr);
+    gap: clamp(18px, 3vw, 42px);
+    align-items: center;
+    padding: clamp(26px, 3.5vw, 44px);
+    border: 1px solid transparent;
+    border-radius: 34px;
+    background: radial-gradient(ellipse at 78% 44%, #e7ecff 0%, #f0f2fc 46%, #f6f6f2 80%);
+  }
+  .hero-copy { min-width: 0; padding: 16px 0; }
+  .product-status { display: flex; align-items: center; gap: 9px; margin: 0 0 26px; color: var(--blue-deep); font-size: .68rem; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
+  .product-status > span { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+  h1 { margin: 0; font-size: clamp(3.35rem, 4.8vw, 4.65rem); line-height: 1.03; letter-spacing: -.055em; font-weight: 650; }
+  h1 em, h2 em { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; }
+  .hero-description { margin: 28px 0 14px; max-width: 420px; font-size: 1.12rem; line-height: 1.6; letter-spacing: -.015em; }
+  .hero-context { max-width: 340px; margin: 0; font-size: .95rem; color: var(--muted); line-height: 1.6; }
+  .product-actions { display: flex; align-items: flex-start; flex-direction: column; gap: 18px; margin-top: 30px; }
+  .development-link, .back-link { display: inline-flex; gap: 10px; align-items: center; font-size: .82rem; text-decoration: none; padding: 5px 0; }
+  .development-link:hover, .back-link:hover { color: var(--blue); }
+  .preview-note { color: var(--muted); font-size: .69rem; margin: 25px 0 0; line-height: 1.6; }
+  .hero-showcase { min-width: 0; }
+  .showcase-caption { text-align: center; color: var(--muted); font-size: .71rem; margin: 17px 0 0; }
+  .workflow-section { padding: 112px 0 94px; scroll-margin-top: 28px; }
+  .section-heading { display: grid; grid-template-columns: 1.25fr .75fr; align-items: end; gap: 60px; margin-bottom: 48px; }
+  .eyebrow { color: var(--muted); font-weight: 650; font-size: .68rem; text-transform: uppercase; letter-spacing: .13em; margin: 0 0 18px; }
+  h2 { font-size: clamp(2.5rem, 4.3vw, 4rem); line-height: 1.05; letter-spacing: -.05em; font-weight: 620; margin: 0; }
+  .section-lead { font-size: .97rem; line-height: 1.7; max-width: 370px; color: var(--muted); margin: 0 0 4px; }
+  .workflow-grid { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; margin: 0; padding: 0; }
+  .workflow-step { min-width: 0; }
+  .step-label { display: flex; align-items: baseline; gap: 10px; padding: 0 0 18px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+  .step-label > span { font-size: .7rem; color: var(--blue); font-weight: 650; }
+  .step-label h3 { font-size: 1.1rem; line-height: 1.4; margin: 0; font-weight: 650; letter-spacing: -.025em; }
+  .screen-link { display: block; text-decoration: none; }
+  .screen-window { overflow: hidden; position: relative; width: 100%; border-radius: 22px; background: #eef0f7; box-shadow: 0 0 0 1px rgba(22,23,21,.1), 0 12px 28px rgba(29,40,78,.065); }
+  .screen-window img { position: absolute; max-width: none; display: block; }
+  .screen-link-caption { display: flex; justify-content: space-between; color: var(--muted); font-size: .71rem; margin-top: 13px; }
+  .screen-link:hover .screen-link-caption { color: var(--blue); }
+  .workflow-step > p { font-size: .9rem; line-height: 1.7; margin: 20px 0 0; color: #53574f; }
+  .screens-note { margin: 32px 0 0; font-size: .75rem; line-height: 1.6; color: var(--muted); max-width: 760px; }
+  .continuity-section { display: grid; grid-template-columns: 1fr 1fr; gap: 88px; align-items: center; border-top: 1px solid var(--line); padding: 88px 0 102px; }
+  .continuity-copy > p:not(.eyebrow) { max-width: 470px; font-size: 1rem; line-height: 1.7; margin: 26px 0 0; }
+  .continuity-copy > .continuity-detail { color: var(--muted); font-size: .9rem !important; margin-top: 17px !important; }
+  .personal-note { display: flex; gap: 12px; align-items: center; font-size: .82rem; margin-top: 27px; }
+  .personal-note > span { color: var(--blue); font-size: 1.2rem; }
+  .story-structure { margin: 0; padding: 30px; background: #1b222e; border-radius: 26px; color: #f4f5fa; }
+  .story-structure figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-size: .77rem; color: #d1d7e3; margin-bottom: 30px; }
+  .story-structure figcaption > span { color: #9caabe; font-size: .65rem; }
+  .universe-node { border-left: 2px solid #9eaef7; padding-left: 18px; }
+  .node-label { display: block; font-size: .61rem; text-transform: uppercase; letter-spacing: .13em; color: #b6c5ff; margin-bottom: 9px; }
+  .universe-node strong, .series-node strong { display: block; font-size: 1.1rem; line-height: 1.4; font-weight: 560; }
+  .universe-node small { display: block; margin-top: 8px; color: #9caabe; font-size: .72rem; }
+  .series-branch { margin: 22px 0 0 20px; padding: 0 0 0 23px; border-left: 1px solid #465165; }
+  .series-node { padding: 4px 0 14px; }
+  .series-node .node-label { color: #afc7bc; }
+  .episodes { display: grid; gap: 9px; margin-top: 4px; }
+  .episode-node { display: flex; gap: 14px; align-items: center; padding: 13px 15px; background: #262f3e; border-radius: 11px; }
+  .episode-node > span { font-size: .72rem; color: #9cabc2; }
+  .episode-node strong { display: block; font-size: .83rem; font-weight: 540; }
+  .episode-node small { display: block; color: #acb6c7; font-size: .68rem; margin-top: 4px; }
+  .continue-node { background: transparent; border: 1px dashed #596578; }
+  .development-section { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 88px; padding: 60px; margin-bottom: 88px; background: #e9ede6; border: 1px solid #dce2d7; border-radius: 28px; scroll-margin-top: 28px; }
+  .development-badge { display: inline-block; color: #385244; border: 1px solid #c3d0be; border-radius: 999px; padding: 7px 12px; font-size: .69rem; font-weight: 600; }
+  .development-copy > p { font-size: .95rem; line-height: 1.7; color: #4c574a; margin: 20px 0 0; }
+  .development-copy > p + p { margin-top: 12px; }
+  .development-actions { display: flex; align-items: flex-start; flex-direction: column; gap: 16px; margin-top: 26px; }
+  @media (max-width: 1100px) {
+    .aistory-hero { grid-template-columns: 1fr; gap: 30px; }
+    .hero-copy { padding: 4px 0 0; max-width: 680px; }
+    .hero-description, .hero-context { max-width: 540px; }
+    .product-actions { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 24px; }
+    .preview-note { margin-top: 18px; }
+    .workflow-grid { gap: 22px; }
+    .step-label { min-height: 60px; }
+    .continuity-section { gap: 44px; }
+    .development-section { gap: 44px; padding: 40px; }
+  }
+  @media (max-width: 820px) {
+    .workflow-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 26px; }
+    .section-heading { grid-template-columns: 1fr; gap: 22px; }
+    .section-lead { max-width: 520px; }
+    .continuity-section, .development-section { grid-template-columns: 1fr; gap: 38px; }
+    .continuity-copy > p:not(.eyebrow) { max-width: 610px; }
+    .step-label { min-height: 0; }
+  }
+  @media (max-width: 620px) {
+    main { padding-top: 18px; }
+    .aistory-hero { padding: 24px; border-radius: 24px; gap: 28px; }
+    h1 { font-size: clamp(2.7rem, 11vw, 3.7rem); }
+    .hero-description { font-size: 1rem; margin-top: 23px; }
+    .hero-context { font-size: .87rem; }
+    .desktop-break { display: none; }
+    .product-status { font-size: .61rem; margin-bottom: 20px; }
+    .product-actions { gap: 16px; margin-top: 24px; }
+    .preview-note { font-size: .65rem; }
+    .showcase-caption { font-size: .65rem; }
+    .workflow-section { padding: 66px 0; }
+    h2 { font-size: clamp(2.1rem, 9vw, 3rem); }
+    .section-heading { margin-bottom: 35px; }
+    .section-lead { font-size: .9rem; }
+    .workflow-grid { gap: 34px 18px; }
+    .step-label { flex-direction: column; gap: 6px; padding-bottom: 12px; margin-bottom: 18px; }
+    .step-label h3 { font-size: .96rem; min-height: 2.7em; }
+    .screen-window { border-radius: 15px; }
+    .screen-link-caption { font-size: .66rem; }
+    .workflow-step > p { font-size: .81rem; line-height: 1.65; margin-top: 16px; }
+    .continuity-section { padding: 64px 0; }
+    .continuity-copy > p:not(.eyebrow) { font-size: .91rem; }
+    .story-structure { padding: 23px; border-radius: 22px; }
+    .series-branch { margin-left: 10px; padding-left: 16px; }
+    .universe-node strong, .series-node strong { font-size: 1rem; }
+    .development-section { padding: 28px; border-radius: 22px; margin-bottom: 56px; }
+    .development-copy > p { font-size: .89rem; }
+  }
+</style>

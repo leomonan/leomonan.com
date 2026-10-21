@@ -26,7 +26,9 @@ camera/entry/exit logic and screen-texture preparation.
 
 | Location | Purpose |
 | --- | --- |
-| `src/pages/index.astro` | Public website |
+| `src/pages/index.astro` | Personal website and product entry |
+| `src/pages/aistory.astro` | AIStory product overview and development status |
+| `src/layouts/SiteLayout.astro` | Shared site shell, tokens and page metadata |
 | `src/components/AIStoryReal3DFan.astro` | Homepage 3D showcase with responsive static fallback |
 | `src/lib/aistory-fan3d.js` | Three.js renderer, fixed screen textures, animation and error handling |
 | `src/lib/aistory-fan3d-layout.js` | Shared scene geometry / camera pose contract |
@@ -50,3 +52,10 @@ license check; possession of a GLB is not itself proof of distribution rights.
 
 This is a single-production-snapshot repository. Legacy experimental branches,
 old pose pictures, and replaced models are not needed for deployment.
+
+## Product-page checks
+
+With a built Astro preview running, run
+`node scripts/verify-aistory-product-page.mjs` (temporary `playwright-core` required).
+This covers navigation, six viewport widths, full-size screenshots, live WebGL,
+no-JavaScript content, reduced motion, and model-load failure.

@@ -1,0 +1,126 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  path?: '/' | '/aistory';
+}
+const {
+  title = 'Leo Monan — Independent Product Builder',
+  description = 'Leo Monan is an independent product builder creating AI-native products across storytelling, desktop tools, automation, and interactive systems.',
+  path = '/',
+} = Astro.props;
+const productPage = path === '/aistory';
+const canonical = new URL(path, 'https://leomonan.com').href;
+const navigation = productPage
+  ? [{ label: 'All products', href: '/#work' }, { label: 'Workflow', href: '#workflow' }, { label: 'Development', href: '#development' }]
+  : [{ label: 'Work', href: '#work' }, { label: 'Systems', href: '#systems' }, { label: 'About', href: '#about' }];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f6f2" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {productPage && <>
+      <meta property="og:image" content="https://leomonan.com/images/work/aistory-fan3d-poster-desktop.webp" />
+      <meta property="og:image:alt" content="AIStory's illustrated story player and personal creation tools on three phones" />
+    </>}
+    <meta name="twitter:card" content={productPage ? 'summary_large_image' : 'summary'} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="canonical" href={canonical} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#top">Skip to content</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="Leo Monan home">
+          <span class="brand-mark">LM</span>
+          <span>Leo Monan</span>
+        </a>
+        <nav aria-label="Primary navigation" data-page={productPage ? 'aistory' : 'home'}>
+          {navigation.map(link => <a href={link.href}>{link.label}</a>)}
+        </nav>
+      </header>
+      <slot />
+      <footer class="site-footer">
+        <span>© 2026 Leo Monan</span>
+        <span>Building quietly. Shipping deliberately.</span>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+
+  :root {
+    --bg: #f6f6f2;
+    --surface: #ffffff;
+    --ink: #161715;
+    --muted: #6d706a;
+    --line: #dcddd7;
+    --blue: #3558ff;
+    --blue-deep: #1c2d80;
+    --blue-soft: #eef1ff;
+    --mint: #d9f8e8;
+    --peach: #ffe8db;
+    --dark: #171816;
+    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; background: var(--bg); }
+  body { margin: 0; color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+
+  .site-shell { width: min(calc(100% - 40px), 1320px); margin: 0 auto; }
+
+  .site-header {
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brand { display: inline-flex; gap: 11px; align-items: center; text-decoration: none; font-weight: 680; letter-spacing: -0.025em; }
+  .brand-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--ink); color: white; font-size: 0.67rem; }
+  .site-header nav { display: flex; gap: clamp(18px, 3vw, 38px); }
+  .site-header nav a { text-decoration: none; color: var(--muted); font-size: 0.88rem; transition: color 150ms ease; }
+  .site-header nav a:hover, .site-header nav a:focus-visible { color: var(--ink); }
+
+  .button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; padding: 0 18px; border-radius: 14px; text-decoration: none; font-size: 0.88rem; font-weight: 650; transition: transform 160ms ease, background 160ms ease; }
+  .button:hover { transform: translateY(-2px); }
+  .button-primary { color: white; background: var(--ink); }
+  .button-primary:hover { background: #292a27; }
+  .button-quiet { border: 1px solid var(--line); background: rgba(255,255,255,0.5); }
+  .site-footer { min-height: 100px; display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.75rem; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 5px; }
+  .skip-link { position: absolute; left: 20px; top: -100px; z-index: 20; padding: 12px 18px; background: var(--ink); color: white; border-radius: 10px; }
+  .skip-link:focus { top: 12px; }
+  @media (max-width: 620px) {
+    .site-shell { width: min(calc(100% - 28px), 1320px); }
+    .site-header { height: 68px; }
+    .brand-mark { display: none; }
+    .site-header nav { gap: 16px; }
+    .site-header nav a { font-size: 0.77rem; }
+    .site-header nav[data-page="home"] a:nth-child(2) { display: none; }
+
+    .site-footer { flex-direction: column; align-items: flex-start; justify-content: center; padding: 28px 0; }
+    .site-header nav[data-page="aistory"] a:first-child { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: 0.01ms !important; }
+  }
+</style>

@@ -7,7 +7,8 @@ or new runtime abstractions.
 - Node.js 22.22+; install with `npm ci`.
 - `npm run dev` starts a foreground Astro dev server.
 - `npm test` runs Node's built-in tests; `npm run build` validates production.
-- The public page is `src/pages/index.astro`, not an isolated 3D lab route.
+- Public pages are `src/pages/index.astro` and `src/pages/aistory.astro`.
+  Both reuse the same production 3D component; no isolated lab route.
 - Keep exactly one production 3D phone GLB and four source screen WebPs.
 - Responsive initial previews are *generated from the same live WebGL scene*,
   not from independent CSS positioning of different phone images.

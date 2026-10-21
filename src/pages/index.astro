@@ -1,4 +1,5 @@
 ---
+import SiteLayout from '../layouts/SiteLayout.astro';
 import AIStoryReal3DFan from '../components/AIStoryReal3DFan.astro';
 
 const systems = [
@@ -35,280 +36,203 @@ const principles = [
 ];
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <meta
-      name="description"
-      content="Leo Monan is an independent product builder creating AI-native products across storytelling, desktop tools, automation, and interactive systems."
-    />
-    <meta name="theme-color" content="#f6f6f2" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Leo Monan — Independent Product Builder" />
-    <meta
-      property="og:description"
-      content="AI-native products across stories, desktop tools, agents, and interactive systems."
-    />
-    <meta property="og:url" content="https://leomonan.com/" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="canonical" href="https://leomonan.com/" />
-    <title>Leo Monan — Independent Product Builder</title>
-  </head>
-
-  <body>
-    <div class="site-shell">
-      <header class="site-header">
-        <a class="brand" href="#top" aria-label="Leo Monan home">
-          <span class="brand-mark">LM</span>
-          <span>Leo Monan</span>
-        </a>
-        <nav aria-label="Primary navigation">
-          <a href="#work">Work</a>
-          <a href="#systems">Systems</a>
-          <a href="#about">About</a>
-        </nav>
-      </header>
-
-      <main id="top">
-        <section class="hero">
-          <div class="hero-copy">
-            <div class="status"><span></span> Independent product builder</div>
-            <h1>Building products<br />for an <em>AI-native world.</em></h1>
-            <p class="hero-lead">
-              I design and build products from idea to production — across storytelling,
-              desktop tools, automation, and interactive systems.
-            </p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="#work">View selected work <span>↘</span></a>
-              <a class="button button-quiet" href="https://github.com/leomonan" target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
-            </div>
-          </div>
-
-          <aside class="hero-panel" aria-label="Current products">
-            <div class="hero-panel-top">
-              <span>Current products</span>
-              <span>2026</span>
-            </div>
-            <div class="signal" aria-hidden="true">
-              <div class="signal-ring ring-a"></div>
-              <div class="signal-ring ring-b"></div>
-              <div class="signal-core">LM</div>
-              <i class="signal-dot dot-a"></i>
-              <i class="signal-dot dot-b"></i>
-              <i class="signal-dot dot-c"></i>
-            </div>
-            <div class="focus-list">
-              <div class="focus-row"><span>AIStory</span><small>Flagship · Story worlds</small></div>
-              <div class="focus-row"><span>Colook</span><small>Desktop · AI agents</small></div>
-              <div class="focus-row"><span>EasyTranslator</span><small>Shipped · macOS</small></div>
-            </div>
-          </aside>
-        </section>
-
-        <section class="section work" id="work">
-          <div class="section-intro">
-            <div>
-              <p class="mini-label">Selected work</p>
-              <h2>Products, not demos.</h2>
-            </div>
-            <p class="section-note">
-              A flagship story platform, a workspace for coding agents, and a shipped desktop understanding tool.
-            </p>
-          </div>
-
-          <article class="flagship-card">
-            <div class="flagship-copy">
-              <div class="card-meta">
-                <span>01 / Flagship</span>
-                <span>Active development</span>
-              </div>
-              <div class="flagship-text">
-                <p class="project-kicker">Persistent story worlds</p>
-                <h3>AIStory</h3>
-                <p class="project-tagline">Stories that remember.</p>
-                <p class="project-description">
-                  A story creation system where characters, voices, visuals, and continuity can persist across episodes and series — turning one-off generation into a world that can keep growing.
-                </p>
-                <ul class="tag-list" aria-label="AIStory topics">
-                  <li>Story worlds</li>
-                  <li>Characters</li>
-                  <li>Voice</li>
-                  <li>Continuity</li>
-                </ul>
-              </div>
-            </div>
-
-            <AIStoryReal3DFan />
-          </article>
-
-          <div class="product-pair">
-            <article class="product-card colook-card">
-              <div class="card-meta">
-                <span>02 / Desktop</span>
-                <span>Early access</span>
-              </div>
-              <div class="product-visual terminal-visual" aria-hidden="true">
-                <div class="terminal-top"><span></span><span></span><span></span></div>
-                <div class="agent-row active"><b>Codex</b><small>running · high</small><i></i></div>
-                <div class="agent-row"><b>Claude Code</b><small>waiting</small><i></i></div>
-                <div class="agent-row"><b>Cursor Agent</b><small>ready</small><i></i></div>
-              </div>
-              <div class="product-copy">
-                <p class="project-kicker">Local-first agent workspace</p>
-                <h3>Colook</h3>
-                <p class="project-tagline">See what your coding agents are actually doing.</p>
-                <p>
-                  A desktop workspace for Codex, Claude Code, and Cursor Agent — bringing sessions, runtime state, and permission handling into one place.
-                </p>
-                <a class="text-link" href="https://github.com/leomonan/co-look-downloads/releases" target="_blank" rel="noreferrer">View releases <span>↗</span></a>
-              </div>
-            </article>
-
-            <article class="product-card translator-card">
-              <div class="card-meta">
-                <span>03 / macOS</span>
-                <span>Shipped</span>
-              </div>
-              <div class="product-visual translator-visual" aria-hidden="true">
-                <div class="selection-line">You don’t have to leave your flow to understand it.</div>
-                <div class="translation-popover">
-                  <div class="popover-label">Natural meaning</div>
-                  <strong>理解，不必离开当前工作流。</strong>
-                  <div class="popover-grid"><span>Context</span><span>Terms</span><span>Explain</span></div>
-                </div>
-              </div>
-              <div class="product-copy">
-                <p class="project-kicker">Desktop understanding layer</p>
-                <h3>EasyTranslator</h3>
-                <p class="project-tagline">Understand without leaving your flow.</p>
-                <p>
-                  A low-interruption macOS tool that brings translation, explanation, terminology, and context next to the text or screenshot you’re already looking at.
-                </p>
-                <a class="text-link" href="https://github.com/leomonan/EasyTranslator-downloads/releases" target="_blank" rel="noreferrer">View releases <span>↗</span></a>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section class="section systems" id="systems">
-          <div class="section-intro systems-intro">
-            <div>
-              <p class="mini-label">Systems & experiments</p>
-              <h2>Under the surface.</h2>
-            </div>
-            <p class="section-note">
-              Some projects are products. Others are where I work on the reliability, runtime, and tooling ideas behind them.
-            </p>
-          </div>
-
-          <div class="systems-list">
-            {systems.map((system) => (
-              <article class="system-row">
-                <span class="system-number">{system.number}</span>
-                <div class="system-name">
-                  <small>{system.type}</small>
-                  <h3>{system.name}</h3>
-                </div>
-                <p>{system.description}</p>
-                <ul class="system-tags" aria-label={`${system.name} topics`}>
-                  {system.tags.map((tag) => <li>{tag}</li>)}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section class="section thinking" id="thinking">
-          <div class="section-intro compact">
-            <div>
-              <p class="mini-label">How I think</p>
-              <h2>Three things I care about.</h2>
-            </div>
-          </div>
-
-          <div class="principle-grid">
-            {principles.map(([number, title, body]) => (
-              <article class="principle-card">
-                <span class="principle-number">{number}</span>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section class="about-wrap" id="about">
-          <div class="about-card">
-            <div class="about-kicker">Leo Monan / 2026</div>
-            <div class="about-grid">
-              <h2>From idea<br />to production.</h2>
-              <div class="about-copy">
-                <p class="about-lead">
-                  I’m an independent product builder focused on AI-native software.
-                </p>
-                <p>
-                  I work across product thinking, interaction design, architecture, and implementation. I’m especially interested in products that remember, continue, and reliably get work done.
-                </p>
-                <a href="https://github.com/leomonan" target="_blank" rel="noreferrer">Follow the work on GitHub <span>↗</span></a>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer>
-        <span>© 2026 Leo Monan</span>
-        <span>Building quietly. Shipping deliberately.</span>
-      </footer>
+<SiteLayout>
+<main id="top">
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="status"><span></span> Independent product builder</div>
+      <h1>Building products<br />for an <em>AI-native world.</em></h1>
+      <p class="hero-lead">
+        I design and build products from idea to production — across storytelling,
+        desktop tools, automation, and interactive systems.
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#work">View selected work <span>↘</span></a>
+        <a class="button button-quiet" href="https://github.com/leomonan" target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
+      </div>
     </div>
-  </body>
-</html>
+
+    <aside class="hero-panel" aria-label="Current products">
+      <div class="hero-panel-top">
+        <span>Current products</span>
+        <span>2026</span>
+      </div>
+      <div class="signal" aria-hidden="true">
+        <div class="signal-ring ring-a"></div>
+        <div class="signal-ring ring-b"></div>
+        <div class="signal-core">LM</div>
+        <i class="signal-dot dot-a"></i>
+        <i class="signal-dot dot-b"></i>
+        <i class="signal-dot dot-c"></i>
+      </div>
+      <div class="focus-list">
+        <a class="focus-row focus-link" href="/aistory"><span>AIStory</span><small>Flagship · Story worlds →</small></a>
+        <div class="focus-row"><span>Colook</span><small>Desktop · AI agents</small></div>
+        <div class="focus-row"><span>EasyTranslator</span><small>Shipped · macOS</small></div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="section work" id="work">
+    <div class="section-intro">
+      <div>
+        <p class="mini-label">Selected work</p>
+        <h2>Products, not demos.</h2>
+      </div>
+      <p class="section-note">
+        A flagship story platform, a workspace for coding agents, and a shipped desktop understanding tool.
+      </p>
+    </div>
+
+    <article class="flagship-card">
+      <div class="flagship-copy">
+        <div class="card-meta">
+          <span>01 / Flagship</span>
+          <span>Active development</span>
+        </div>
+        <div class="flagship-text">
+          <p class="project-kicker">Persistent story worlds</p>
+          <h3>AIStory</h3>
+          <p class="project-tagline">Stories that remember.</p>
+          <p class="project-description">
+            A story creation system where characters, voices, visuals, and continuity can persist across episodes and series — turning one-off generation into a world that can keep growing.
+          </p>
+          <ul class="tag-list" aria-label="AIStory topics">
+            <li>Story worlds</li>
+            <li>Characters</li>
+            <li>Voice</li>
+            <li>Continuity</li>
+          </ul>
+          <div class="flagship-actions">
+            <a class="button button-primary" href="/aistory" data-aistory-entry>
+              Explore AIStory <span aria-hidden="true">→</span>
+            </a>
+            <span>Product overview · In development</span>
+          </div>
+        </div>
+      </div>
+
+      <AIStoryReal3DFan />
+    </article>
+
+    <div class="product-pair">
+      <article class="product-card colook-card">
+        <div class="card-meta">
+          <span>02 / Desktop</span>
+          <span>Early access</span>
+        </div>
+        <div class="product-visual terminal-visual" aria-hidden="true">
+          <div class="terminal-top"><span></span><span></span><span></span></div>
+          <div class="agent-row active"><b>Codex</b><small>running · high</small><i></i></div>
+          <div class="agent-row"><b>Claude Code</b><small>waiting</small><i></i></div>
+          <div class="agent-row"><b>Cursor Agent</b><small>ready</small><i></i></div>
+        </div>
+        <div class="product-copy">
+          <p class="project-kicker">Local-first agent workspace</p>
+          <h3>Colook</h3>
+          <p class="project-tagline">See what your coding agents are actually doing.</p>
+          <p>
+            A desktop workspace for Codex, Claude Code, and Cursor Agent — bringing sessions, runtime state, and permission handling into one place.
+          </p>
+          <a class="text-link" href="https://github.com/leomonan/co-look-downloads/releases" target="_blank" rel="noreferrer">View releases <span>↗</span></a>
+        </div>
+      </article>
+
+      <article class="product-card translator-card">
+        <div class="card-meta">
+          <span>03 / macOS</span>
+          <span>Shipped</span>
+        </div>
+        <div class="product-visual translator-visual" aria-hidden="true">
+          <div class="selection-line">You don’t have to leave your flow to understand it.</div>
+          <div class="translation-popover">
+            <div class="popover-label">Natural meaning</div>
+            <strong>理解，不必离开当前工作流。</strong>
+            <div class="popover-grid"><span>Context</span><span>Terms</span><span>Explain</span></div>
+          </div>
+        </div>
+        <div class="product-copy">
+          <p class="project-kicker">Desktop understanding layer</p>
+          <h3>EasyTranslator</h3>
+          <p class="project-tagline">Understand without leaving your flow.</p>
+          <p>
+            A low-interruption macOS tool that brings translation, explanation, terminology, and context next to the text or screenshot you’re already looking at.
+          </p>
+          <a class="text-link" href="https://github.com/leomonan/EasyTranslator-downloads/releases" target="_blank" rel="noreferrer">View releases <span>↗</span></a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section systems" id="systems">
+    <div class="section-intro systems-intro">
+      <div>
+        <p class="mini-label">Systems & experiments</p>
+        <h2>Under the surface.</h2>
+      </div>
+      <p class="section-note">
+        Some projects are products. Others are where I work on the reliability, runtime, and tooling ideas behind them.
+      </p>
+    </div>
+
+    <div class="systems-list">
+      {systems.map((system) => (
+        <article class="system-row">
+          <span class="system-number">{system.number}</span>
+          <div class="system-name">
+            <small>{system.type}</small>
+            <h3>{system.name}</h3>
+          </div>
+          <p>{system.description}</p>
+          <ul class="system-tags" aria-label={`${system.name} topics`}>
+            {system.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section thinking" id="thinking">
+    <div class="section-intro compact">
+      <div>
+        <p class="mini-label">How I think</p>
+        <h2>Three things I care about.</h2>
+      </div>
+    </div>
+
+    <div class="principle-grid">
+      {principles.map(([number, title, body]) => (
+        <article class="principle-card">
+          <span class="principle-number">{number}</span>
+          <h3>{title}</h3>
+          <p>{body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="about-wrap" id="about">
+    <div class="about-card">
+      <div class="about-kicker">Leo Monan / 2026</div>
+      <div class="about-grid">
+        <h2>From idea<br />to production.</h2>
+        <div class="about-copy">
+          <p class="about-lead">
+            I’m an independent product builder focused on AI-native software.
+          </p>
+          <p>
+            I work across product thinking, interaction design, architecture, and implementation. I’m especially interested in products that remember, continue, and reliably get work done.
+          </p>
+          <a href="https://github.com/leomonan" target="_blank" rel="noreferrer">Follow the work on GitHub <span>↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</SiteLayout>
 
 <style>
-  :root {
-    --bg: #f6f6f2;
-    --surface: #ffffff;
-    --ink: #161715;
-    --muted: #6d706a;
-    --line: #dcddd7;
-    --blue: #3558ff;
-    --blue-deep: #1c2d80;
-    --blue-soft: #eef1ff;
-    --mint: #d9f8e8;
-    --peach: #ffe8db;
-    --dark: #171816;
-    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-  }
-
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; background: var(--bg); }
-  body { margin: 0; color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; }
-  a { color: inherit; }
-
-  .site-shell { width: min(calc(100% - 40px), 1320px); margin: 0 auto; }
-
-  .site-header {
-    height: 76px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .brand { display: inline-flex; gap: 11px; align-items: center; text-decoration: none; font-weight: 680; letter-spacing: -0.025em; }
-  .brand-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--ink); color: white; font-size: 0.67rem; }
-  nav { display: flex; gap: clamp(18px, 3vw, 38px); }
-  nav a { text-decoration: none; color: var(--muted); font-size: 0.88rem; transition: color 150ms ease; }
-  nav a:hover, nav a:focus-visible { color: var(--ink); }
-
-  .hero {
+.hero {
     min-height: 690px;
     display: grid;
     grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
@@ -333,11 +257,7 @@ const principles = [
   h1 em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: -0.05em; }
   .hero-lead { max-width: 680px; margin: 0; color: #484a45; font-size: clamp(1.03rem, 1.45vw, 1.24rem); line-height: 1.64; letter-spacing: -0.018em; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
-  .button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; padding: 0 18px; border-radius: 14px; text-decoration: none; font-size: 0.88rem; font-weight: 650; transition: transform 160ms ease, background 160ms ease; }
-  .button:hover { transform: translateY(-2px); }
-  .button-primary { color: white; background: var(--ink); }
-  .button-primary:hover { background: #292a27; }
-  .button-quiet { border: 1px solid var(--line); background: rgba(255,255,255,0.5); }
+
 
   .hero-panel {
     min-height: 500px;
@@ -451,7 +371,7 @@ const principles = [
   .about-copy > p:not(.about-lead) { margin: 0 0 30px; color: #b8bab3; line-height: 1.7; font-size: 0.95rem; }
   .about-copy a { display: inline-flex; gap: 10px; color: white; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.5); padding-bottom: 4px; font-size: 0.88rem; }
 
-  footer { min-height: 100px; display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.75rem; }
+
 
   @media (max-width: 1100px) {
     .flagship-card { grid-template-columns: 1fr; }
@@ -476,12 +396,6 @@ const principles = [
   }
 
   @media (max-width: 620px) {
-    .site-shell { width: min(calc(100% - 28px), 1320px); }
-    .site-header { height: 68px; }
-    .brand-mark { display: none; }
-    nav { gap: 16px; }
-    nav a { font-size: 0.77rem; }
-    nav a:nth-child(2) { display: none; }
 
     .hero { padding-top: 58px; padding-bottom: 82px; }
     h1 { font-size: clamp(3.45rem, 16.5vw, 5.3rem); }
@@ -509,11 +423,13 @@ const principles = [
     .about-card { border-radius: 24px; }
     .about-grid { margin-top: 50px; }
 
-    footer { flex-direction: column; align-items: flex-start; justify-content: center; padding: 28px 0; }
+
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { transition-duration: 0.01ms !important; }
-  }
+
+
+  .focus-link { text-decoration: none; }
+  .focus-link:hover { color: var(--blue); }
+  .flagship-actions { display: flex; align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 30px; }
+  .flagship-actions > span { color: var(--muted); font-size: .74rem; }
 </style>
