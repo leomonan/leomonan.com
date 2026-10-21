@@ -12,7 +12,6 @@ const DEG = Math.PI / 180;
 const PHONE_HEIGHT = FAN_VISUAL.modelHeight;
 const STAGE_WIDTH = FAN_VISUAL.referenceWidth;
 const SOURCE_SIZE = { width: 1122, height: 1402 };
-const TEXTURE_SIZE = { width: 720, height: 1560 };
 const $ = (root, selector) => root.querySelector(selector);
 
 function makeTexture(url, crop, renderer) {
@@ -25,8 +24,11 @@ function makeTexture(url, crop, renderer) {
       throw new Error('Unexpected AIStory source dimensions: ' + url);
     }
     const canvas = document.createElement('canvas');
-    canvas.width = TEXTURE_SIZE.width;
-    canvas.height = TEXTURE_SIZE.height;
+    // Preserve the original crop pixels 1:1. Upscaling the 560–616px
+    // source to a fixed 720px canvas smoothed small text before WebGL could
+    // sample it; texture UVs already adapt to the real screen dimensions.
+    canvas.width = crop.w;
+    canvas.height = crop.h;
     const context = canvas.getContext('2d', { alpha: false });
     if (!context) throw new Error('Canvas 2D is not available');
     context.imageSmoothingEnabled = true;
@@ -41,7 +43,8 @@ function makeTexture(url, crop, renderer) {
     texture.colorSpace = THREE.SRGBColorSpace;
     // glTF UVs use the loader's unflipped texture convention.
     texture.flipY = false;
-    texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    // The side screens face the camera obliquely (original K yaw).
+    texture.anisotropy = Math.min(16, renderer.capabilities.getMaxAnisotropy());
     texture.needsUpdate = true;
     return texture;
   });
@@ -186,7 +189,10 @@ export async function mountAIStoryReal3DFan() {
     return;
   }
   renderer.setClearColor(0, 0);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  // Render small type with enough subpixel coverage even on 1x desktops.
+  // A bounded DPR avoids the former 1.5x Retina blur without unbounded 3x/4x
+  // mobile GPU cost; the visible stage is at most 850 × 570 CSS pixels.
+  renderer.setPixelRatio(Math.min(2, Math.max(1.5, window.devicePixelRatio || 1)));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.12;

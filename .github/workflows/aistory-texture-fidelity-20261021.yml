@@ -1,0 +1,95 @@
+name: AIStory 3D texture fidelity study
+on:
+  push:
+    branches: [feature/aistory-crisper-screen-textures-20261021]
+    paths:
+      - src/lib/aistory-fan3d.js
+      - scripts/study-aistory-texture-fidelity.mjs
+      - .github/workflows/aistory-texture-fidelity-20261021.yml
+permissions:
+  contents: write
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Unit tests and prepare QA dependencies
+        run: |
+          npm ci
+          npm test
+          node --check scripts/study-aistory-texture-fidelity.mjs
+          npm install --no-save --package-lock=false playwright-core sharp
+      - name: Capture exact production baseline at 1x/2x/3x
+        run: |
+          set -euo pipefail
+          cp src/lib/aistory-fan3d.js /tmp/candidate-fan3d.js
+          git show HEAD^:src/lib/aistory-fan3d.js > src/lib/aistory-fan3d.js
+          npm run build
+          node node_modules/astro/bin/astro.mjs preview --host 127.0.0.1 --port 4321 > /tmp/fan-baseline.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true; cp /tmp/candidate-fan3d.js src/lib/aistory-fan3d.js' EXIT
+          ready=0
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:4321/ -o /dev/null 2>/dev/null; then ready=1; break; fi
+            sleep 1
+          done
+          if test "$ready" != 1; then cat /tmp/fan-baseline.log; exit 1; fi
+          QA_LABEL=baseline node scripts/study-aistory-texture-fidelity.mjs
+          kill "$pid" 2>/dev/null || true
+          sleep 2
+          cp /tmp/candidate-fan3d.js src/lib/aistory-fan3d.js
+          trap - EXIT
+      - name: Capture fidelity changes and regenerate all four posters
+        run: |
+          set -euo pipefail
+          npm run build
+          node node_modules/astro/bin/astro.mjs preview --host 127.0.0.1 --port 4321 > /tmp/fan-candidate.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          ready=0
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:4321/ -o /dev/null 2>/dev/null; then ready=1; break; fi
+            sleep 1
+          done
+          if test "$ready" != 1; then cat /tmp/fan-candidate.log; exit 1; fi
+          QA_LABEL=candidate node scripts/study-aistory-texture-fidelity.mjs
+          node scripts/generate-aistory-fan3d-posters.mjs
+          npm run build
+          QA_OUTPUT_DIR=/tmp/aistory-fidelity-poster-qa node scripts/verify-aistory-fan3d-handoff.mjs
+          kill "$pid" 2>/dev/null || true
+          trap - EXIT
+      - name: Check final source and assets
+        run: |
+          set -euo pipefail
+          npm test
+          npm run build
+          git diff --exit-code -- src/lib/aistory-fan3d.js tests/ src/pages/ src/components/ package.json package-lock.json
+      - name: Archive before-after real WebGL evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: aistory-texture-fidelity-review
+          path: |
+            /tmp/aistory-crispness-study/
+            /tmp/aistory-fidelity-poster-qa/
+          retention-days: 14
+      - name: Commit updated responsive fallback posters to feature branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/images/work/aistory-fan3d-poster-desktop.webp
+          git add public/images/work/aistory-fan3d-poster-tablet.webp
+          git add public/images/work/aistory-fan3d-poster-small.webp
+          git add public/images/work/aistory-fan3d-poster-mobile.webp
+          if git diff --cached --quiet; then
+            echo "Already up-to-date"
+          else
+            git commit -m "assets: match 3D sharpness improvements in SSR fallback [verified]"
+            git push origin HEAD:feature/aistory-crisper-screen-textures-20261021
+          fi
