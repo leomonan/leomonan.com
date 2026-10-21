@@ -1,0 +1,59 @@
+---
+// Replace this URL when the owner supplies the final recording.
+// Keep large media in Release assets, not in this repository's Git history.
+const demoVideoUrl = 'https://github.com/leomonan/leomonan.com/releases/download/aistory-demo-media-v1/2026-10-21.23.59.08.mov';
+---
+
+<section class="demo-preview" id="aistory-demo" aria-labelledby="aistory-demo-title">
+  <div class="demo-copy">
+    <p class="demo-kicker">AIStory / Test sample</p>
+    <h3 id="aistory-demo-title">See a story in action.</h3>
+    <p>A test recording from the AIStory episode player. This temporary clip will be replaced by the final showcase.</p>
+    <p class="demo-note" id="aistory-demo-note">Press play to watch with sound. The video loads from GitHub when you choose to play.</p>
+    <a class="demo-original" href={demoVideoUrl} target="_blank" rel="noopener noreferrer">Open original video <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="demo-media">
+    <video
+      data-aistory-demo-video
+      src={demoVideoUrl}
+      controls
+      playsinline
+      preload="none"
+      aria-label="AIStory test episode recording"
+      aria-describedby="aistory-demo-note"
+    >
+      Your browser does not support embedded video.
+      <a href={demoVideoUrl}>Open the original recording.</a>
+    </video>
+    <p class="demo-error" data-demo-error role="status" hidden>
+      This recording could not be played here. Use “Open original video” to open or download the file.
+    </p>
+  </div>
+</section>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('[data-aistory-demo-video]');
+  const errorNote = document.querySelector<HTMLElement>('[data-demo-error]');
+  if (video && errorNote) {
+    const showError = () => { errorNote.hidden = false; };
+    video.addEventListener('error', showError);
+    if (video.error) showError();
+  }
+</script>
+
+<style>
+  .demo-preview { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center; gap: clamp(24px, 4vw, 56px); padding: clamp(24px, 4vw, 44px); margin-top: 28px; border: 1px solid var(--line); border-radius: 28px; background: var(--surface); scroll-margin-top: 24px; }
+  .demo-copy, .demo-media { min-width: 0; }
+  .demo-kicker { margin: 0 0 16px; color: var(--blue); font-size: .68rem; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
+  h3 { margin: 0 0 18px; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.08; letter-spacing: -.04em; font-weight: 620; }
+  .demo-copy > p:not(.demo-kicker) { max-width: 420px; margin: 0 0 16px; color: var(--muted); font-size: .92rem; line-height: 1.65; }
+  .demo-copy > .demo-note { font-size: .8rem !important; }
+  .demo-original { display: inline-flex; gap: 10px; align-items: center; min-height: 44px; color: var(--ink); font-size: .84rem; text-underline-offset: 4px; }
+  video { display: block; width: 100%; aspect-ratio: 16 / 9; max-height: 560px; object-fit: contain; background: #171816; border-radius: 16px; }
+  .demo-error { color: var(--muted); font-size: .8rem; line-height: 1.6; margin: 12px 0 0; }
+  .demo-error[hidden] { display: none; }
+  @media (max-width: 700px) {
+    .demo-preview { grid-template-columns: 1fr; padding: 24px; border-radius: 24px; gap: 20px; }
+    video { border-radius: 12px; }
+  }
+</style>
