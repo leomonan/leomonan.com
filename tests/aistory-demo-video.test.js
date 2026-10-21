@@ -25,3 +25,15 @@ test('test video uses the supplied Release URL once and native user-initiated co
   assert.match(source, /href=\{demoVideoUrl\}/);
   assert.match(source, /video.addEventListener\('error', showError\)/);
 });
+
+test('recording uses a centered portrait frame and respects intrinsic dimensions', async () => {
+  const source = await read('src/components/AIStoryDemoVideo.astro');
+  const media = source.match(/\n  \.demo-media\s*\{([^}]+)\}/)[1];
+  const video = source.match(/\n  video\s*\{([^}]+)\}/)[1];
+  assert.match(media, /width:\s*min\(100%,\s*320px\)/);
+  assert.match(media, /justify-self:\s*center/);
+  assert.match(video, /height:\s*auto/);
+  assert.match(video, /aspect-ratio:\s*auto\s+9\s*\/\s*19/);
+  assert.match(video, /object-fit:\s*contain/);
+  assert.doesNotMatch(video, /max-height|16\s*\/\s*9|object-fit:\s*cover/);
+});

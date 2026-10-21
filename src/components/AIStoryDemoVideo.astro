@@ -44,12 +44,15 @@ const demoVideoUrl = 'https://github.com/leomonan/leomonan.com/releases/download
 <style>
   .demo-preview { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center; gap: clamp(24px, 4vw, 56px); padding: clamp(24px, 4vw, 44px); margin-top: 28px; border: 1px solid var(--line); border-radius: 28px; background: var(--surface); scroll-margin-top: 24px; }
   .demo-copy, .demo-media { min-width: 0; }
+  .demo-media { width: min(100%, 320px); justify-self: center; }
   .demo-kicker { margin: 0 0 16px; color: var(--blue); font-size: .68rem; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
   h3 { margin: 0 0 18px; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.08; letter-spacing: -.04em; font-weight: 620; }
   .demo-copy > p:not(.demo-kicker) { max-width: 420px; margin: 0 0 16px; color: var(--muted); font-size: .92rem; line-height: 1.65; }
   .demo-copy > .demo-note { font-size: .8rem !important; }
   .demo-original { display: inline-flex; gap: 10px; align-items: center; min-height: 44px; color: var(--ink); font-size: .84rem; text-underline-offset: 4px; }
-  video { display: block; width: 100%; aspect-ratio: 16 / 9; max-height: 560px; object-fit: contain; background: #171816; border-radius: 16px; }
+  /* Reserve a portrait frame before playback; use the recording's intrinsic
+     ratio once metadata arrives. No landscape box, cropping, or stretching. */
+  video { display: block; width: 100%; height: auto; aspect-ratio: auto 9 / 19; object-fit: contain; background: #171816; border-radius: 16px; }
   .demo-error { color: var(--muted); font-size: .8rem; line-height: 1.6; margin: 12px 0 0; }
   .demo-error[hidden] { display: none; }
   @media (max-width: 700px) {
